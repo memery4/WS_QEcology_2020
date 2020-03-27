@@ -1,0 +1,36 @@
+---
+title: 'Ecology Workshop: Project Proposal'
+author: "Meredith Emery"
+date: "1/17/2020"
+output: html_document
+---
+<style type="text/css">
+h1.title{font-size:12px}
+.author{font-size:12px}
+.date{font-size:12px}
+body{/*Normal */ font-size:12px}
+</style>
+### __Temporal Changes in Diatom Assemblage of Lake Annie, FL__ 
+##### _Research Statment_
+Lake Annie is a monomictic, subtropical lake in Florida that exhibits a multi-decadal oscillation in water transparency.  Previous research examined a rare 35+ year limnological monitoring record to show that transparency is controlled by influx of colored dissolved organic carbon (DOC) driven by the Atlantic Multidecadal Oscillation (AMO) that controls the region’s rainfall. The AMO oscillates between a cool phase, where the mean rainfall is less than the long term mean, and a warm phase, where the mean rainfall is higher than the long term mean and more variable among years. Lake Annie’s water clarity is clearer in an AMO cool phase because of lower water column DOC concentrations that produce secchi depth ranges from 3-8 meters, in contrast to AMO warm phases when high DOC concentrations reduce the secchi depth range to 1-5 meters. Monthly phytoplankton and sediment trap samples were taken during an AMO warm phase, from 2006 to 2019, when secchi depth ranged from <1 to over 6 meters, reflecting highly variable regional rainfall. Our goal is to determine the effect of intra- and interannual fluctuations in water transparency on phytoplanktonic diatom assemblage composition. A strong relationship between diatom assemblage composition and transparency would allow us to develop a transfer function to reconstruct a longer (500 year) record of water transparency in Lake Annie to help resolve the role of the AMO in driving Florida’s paleoclimate.  
+
+##### _Objectives_
+1. Determine the relationship between planktonic diatom assemblages and changes in water transparency driven by the AMO from the contemporary (13 year) monitoring record.   
+2. Determine the relationship between planktonic diatom assemblages and changes dissolved organic carbon. Compare this outcome with the results from objective 1.   
+3. Using the sediment trap record (13 year, sampled biannually) to determine whether there is a significant difference in accumulation rate of nutrients (carbon, nitrogen and phosphorus) settling at the bottom of Lake Annie, during time periods when the water column is darker compare to clearer.   
+
+##### _Hypotheses_
+1. Diatom species will have specific and quantifiable optima and tolerances for water transparency. Diatom assemblage will differ between darker and clearer time periods due to these differences in the environmental preferences yielding a strong diatom-base transfer function.   
+2. Diatom assemblages will differ between higher and lower amounts of dissolved organic carbon. This outcome will have similar results to the water transparency study in hypothesis 1.  
+3. There will be more nutrients settling during darker time periods compare to clearer time periods.   
+
+##### _Data Set_
+Archbold Biological Field Station will provide the environmental data (Secchi Depth, Temperature, Salinity, pH, Dissolved Oxygen, Carbon, Nitrogen and Phosphorus). These measurements are taken monthly from 2006-2019.   
+
+I will collect the diatom assemblage data from the monthly phytoplankton samples (2006-2019) given by Archbold Biological Field Station.   
+
+##### _Statistical Analysis_
+Weighted Average Regression, ANOVA, Linear Regression  
+
+##### _Intended Approaches For This Course_
+I intended to use Time Series Analysis to understand how the diatom assemblages and environmental variables change through time. I will use bootstrapping in my analysis when I run a weighted average regression. I wanted to explore the species distribution models and if I can use it with a temporal data set.   
