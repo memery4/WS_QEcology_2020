@@ -1,0 +1,448 @@
+---
+title: "Timeseries_Emery"
+output: html_notebook
+---
+The primary objectives of the workshop:
+1. Create a time series object.
+2. Decompose a time series.
+3. Test for stationarity and detecting autocorrelation.
+4. Choose the order of an ARIMA model.
+5. Use explanatory series to improve models.
+
+Library and Data
+```{r}
+rm(list=ls())
+library(zoo)
+library(tseries)
+library(forecast)
+library(xts)
+load("C:/Users/Mere/Desktop/Spring2020_QEcology/Assignment_Workshop_3_Timeseries/ARIMA_Workshop.RData")
+```
+
+Part 1: 
+1. Create Timeseries objects:
+
+```{r}
+nee <- ts( mangroves$nee, start= 1, frequency=30)
+```
+
+Visualize data:
+```{r}
+par(mfrow=c(1,1), mai=c(0.25,0.8,0.1, 0.1))
+plot( nee, typ="l", ylab= "NEE", xlab="Time", main="Net Ecological Exchange through Time")
+```
+```{r}
+plot(nee)
+lines(tsclean(nee), col="red")
+```
+
+```{r}
+nee <- tsclean(nee)
+
+```
+
+2. Decompose the timeseries: 
+```{r}
+nee.d <- decompose(nee, 'multiplicative')
+plot(nee.d)
+```
+
+3.a. Test for stationarity
+```{r}
+# p-value < 0.05 indicates the TS is stationary
+adf.test(nee )
+
+```
+
+3.b. Detecting Autocorrelation:
+```{r}
+acf(nee, lag.max=45)
+```
+
+```{r}
+pacf(nee, lag.max=45)
+```
+
+4. Fitting an ARIMA Model: 
+
+```{r}
+arima.nee1 <-auto.arima(nee, trace=TRUE)
+```
+
+Residual plots show a smaller error range, more or less centered around 0. We can observe that AIC is smaller for the second model structure as well:
+```{r}
+tsdisplay(residuals(arima.nee1), lag.max=45)
+```
+```{r}
+par(mfrow=c(1,1))
+plot(nee , typ="l",xlab="Time", ylab= "NEE", main= "Model 1: ARIMA NEE"); lines(fitted(arima.nee1),col="red")
+```
+
+```{r}
+arima.nee2 <-arima(nee , order=c(10,1,3), seasonal= list(order=c(2,0,2))) #accounting for some of the outliers
+```
+
+```{r}
+tsdisplay(residuals(arima.nee2), lag.max= 30)
+```
+```{r}
+# You want to minimize AIC
+AIC(arima.nee1, arima.nee2)
+```
+```{r}
+par(mfrow=c(1,1))
+plot(nee , typ="l"); lines(fitted(arima.nee2),col="red")
+```
+
+Test of independence at all lags
+```{r}
+# Measuring for significant difference from white noise.
+# You need a p-value greater than 0.05!
+checkresiduals(arima.nee2, lag=36)
+```
+```{r}
+par(mfrow=c(1,1))
+plot(nee , typ="l", xlab= "Time", ylab= "NEE", main="Model 2: ARIMA NEE"); lines(fitted(arima.nee2),col="red")
+```
+
+Forecast plot
+
+```{r}
+plot(forecast(arima.nee2, h=30),xlab = "Time", ylab = "NEE", main = "Forecasts for Model 2: NEE")
+```
+
+1. Create a timeseries object
+```{r}
+sal <- ts(mangroves$salinity.max, start= 1, frequency=30)
+```
+
+Visualize data:
+```{r}
+par(mfrow=c(1,1), mai=c(0.25,0.8,0.1, 0.1))
+plot(sal , typ="l", ylab= "Salinity", xlab="")
+```
+
+You want to remove any outliers that could bias the model by skewing statistical summaries. 
+
+```{r}
+plot(sal , typ="l", ylab= "Salinity", xlab="")
+lines(tsclean(sal) , col="red")
+```
+
+Clean the timeseries
+```{r}
+sal <- tsclean(sal)
+```
+
+2. Decompose the time series
+```{r}
+sal.d <- decompose(sal, 'multiplicative')
+plot(sal.d)
+```
+
+3.a. Test for stationarity
+```{r}
+# p-value < 0.05 indicates the TS is stationary
+adf.test(sal)
+```
+
+```{r}
+adf.test(diff(sal))
+```
+
+4. Explore correlations.
+```{r}
+ccf( diff(sal),nee, na.action = na.pass, lag.max=40, plot=TRUE)
+
+```
+
+5. Explore Models of NEE
+```{r}
+arima.nee3 <-auto.arima(nee, xreg=c(diff(sal),0), trace=TRUE)
+```
+
+```{r}
+par(mfrow=c(1,1))
+plot(nee , typ="l",ylab="NEE",main="Model 3: Difference in Salinity"); lines(fitted(arima.nee3),col="red")
+```
+
+
+```{r}
+#compare to current model
+AIC(arima.nee2, arima.nee3 )
+```
+So, adding salinity to nee did not improve the model. Maybe extreme salinity is more important. Lets create
+a salinity index to ID when salinity values are greater than 25n ppt.
+
+```{r}
+sal.i <- sal
+sal.i[sal.i < 25 ]<- 0
+sal.i[sal.i >= 25 ]<- 1
+plot(sal.i)
+
+```
+
+Now try adding the extreme salinity indicator into the model to see if this is an improvement:
+
+```{r}
+arima.nee4 <-auto.arima(nee, xreg=sal.i, trace=TRUE)
+```
+
+```{r}
+AIC(arima.nee2,arima.nee4 )
+
+```
+
+```{r}
+checkresiduals(arima.nee4, lag=36)
+```
+
+```{r}
+par(mfrow=c(1,1))
+plot(nee , typ="l",ylab="NEE",main="Model 4: Extreme Salinity Indicator "); lines(fitted(arima.nee4),col="red")
+
+```
+
+Challenge:
+
+Developing another model using: water.tmax
+```{r}
+water.tmax<-ts(mangroves$water.tmax,start= 1, frequency = 30)
+```
+
+Visualize data
+```{r}
+par(mfrow=c(1,1),maic(0.25,0.8,0.1,0.1))
+plot(water.tmax, typ="l", ylab="Water_Temp_Max",xlab="")
+```
+
+```{r}
+plot(water.tmax)
+lines(tsclean(water.tmax),col="red")
+```
+
+```{r}
+water.tmax<-tsclean(water.tmax)
+```
+
+2.Decompose the timeseries
+
+```{r}
+water.tmax.d<-decompose(water.tmax, 'multiplicative')
+plot(water.tmax.d)
+```
+3.a. Test for stationarity
+
+```{r}
+adf.test(water.tmax)
+```
+
+```{r}
+adf.test(diff(water.tmax))
+
+diff_watert<-diff(water.tmax)
+```
+
+4. Explore Correlation (look for significant lags)
+```{r}
+ccf(diff_watert,nee, na.action=na.pass, lag.max=40, plot=TRUE)
+```
+
+5. Explore Models of NEE
+```{r}
+arima.nee5wtmax <-auto.arima(nee, xreg = c(diff_watert,0),trace=TRUE)
+```
+
+Comparing AIC
+```{r}
+AIC(arima.nee1,arima.nee2,arima.nee3,arima.nee4,arima.nee5wtmax)
+
+```
+
+Check Residuals
+```{r}
+checkresiduals(arima.nee5wtmax,lag=36)
+```
+```{r}
+par(mfrow=c(1,1))
+plot(nee , typ="l",ylab="NEE",main="Model 5: Difference in Max Water Temperature"); lines(fitted(arima.nee5wtmax),col="red")
+```
+
+Developing another model using: PAR
+```{r}
+PAR<-ts(mangroves$par,start= 1, frequency = 30)
+```
+
+Visualize data
+```{r}
+par(mfrow=c(1,1),maic(0.25,0.8,0.1,0.1))
+plot(PAR, typ="l", ylab="PAR",xlab="")
+```
+
+```{r}
+plot(PAR)
+lines(tsclean(PAR),col="red")
+```
+
+```{r}
+PAR<-tsclean(PAR)
+```
+
+2.Decompose the timeseries
+
+```{r}
+PAR.d<-decompose(PAR, 'multiplicative')
+plot(PAR.d)
+```
+3.a. Test for stationarity
+
+```{r}
+adf.test(PAR)
+```
+
+```{r}
+adf.test(diff(PAR))
+
+diff_PAR<-diff(PAR)
+```
+
+4. Explore Correlation (look for significant lags)
+```{r}
+ccf(diff_PAR,nee, na.action=na.pass, lag.max=40, plot=TRUE)
+```
+
+5. Explore Models of NEE
+```{r}
+arima.nee6PAR <-auto.arima(nee, xreg = c(diff_PAR,0),trace=TRUE)
+```
+
+Comparing AIC
+```{r}
+AIC(arima.nee1,arima.nee2,arima.nee3,arima.nee4,arima.nee5wtmax,arima.nee6PAR)
+
+```
+
+Check Residuals
+```{r}
+checkresiduals(arima.nee6PAR,lag=36)
+```
+Nee with Diff PAR as the red line
+```{r}
+par(mfrow=c(1,1))
+plot(nee, type="l",ylab="NEE",main="Model 6: Difference in PAR");lines(fitted(arima.nee6PAR),col="red")
+```
+
+Developing another model using: Air Temp
+```{r}
+tair<-ts(mangroves$tair,start= 1, frequency = 30)
+```
+
+Visualize data
+```{r}
+par(mfrow=c(1,1),maic(0.25,0.8,0.1,0.1))
+plot(tair, typ="l", ylab="Air Temp",xlab="")
+```
+
+```{r}
+plot(tair)
+lines(tsclean(tair),col="red")
+```
+
+```{r}
+tair<-tsclean(tair)
+```
+
+2.Decompose the timeseries
+
+```{r}
+tair.d<-decompose(tair, 'multiplicative')
+plot(tair.d)
+```
+3.a. Test for stationarity
+
+```{r}
+adf.test(tair)
+```
+
+```{r}
+adf.test(diff(tair))
+
+diff_tair<-diff(tair)
+```
+
+4. Explore Correlation (look for significant lags)
+```{r}
+ccf(diff_tair,nee, na.action=na.pass, lag.max=40, plot=TRUE)
+```
+
+5. Explore Models of NEE
+```{r}
+arima.nee7tair<-auto.arima(nee, xreg = c(diff_tair,0),trace=TRUE)
+```
+
+Comparing AIC
+```{r}
+AIC(arima.nee1,arima.nee2,arima.nee3,arima.nee4,arima.nee5wtmax,arima.nee6PAR,arima.nee7tair)
+
+```
+
+Check Residuals
+```{r}
+checkresiduals(arima.nee7tair,lag=36)
+```
+Nee with Diff tair as the red line
+```{r}
+par(mfrow=c(1,1))
+plot(nee, type="l", ylab="NEE",main="Model 7: Difference in Air Temp");lines(fitted(arima.nee7tair),col="red")
+```
+
+
+
+
+
+```{r}
+plot(forecast(arima.nee7tair, h=30),xlab = "Time", ylab = "NEE", main = "Forecasts for Model 7: Difference in Air Temperature")
+```
+
+
+```{r}
+mangrove.summary<-by(mangroves$nee, mangroves$salinity.max, mangroves$water.tmax, mangroves$par, mangroves$tair,summary, na.rm=TRUE)
+
+mangrove.summary<-by(mangroves$nee, mangroves$salinity.max,summary, na.rm=TRUE)
+
+mangrove.summary
+
+var_mangroves<-sapply(mangroves[,c(2:5,7)],FUN="var")
+var_mangroves
+
+mean_mangroves<-sapply(mangroves[,c(2:5,7)],FUN="mean")
+mean_mangroves
+
+min_mangroves<-sapply(mangroves[,c(2:5,7)],FUN="min")
+max_mangroves<-sapply(mangroves[,c(2:5,7)],FUN="max")
+rbind(mean_mangroves,min_mangroves,max_mangroves,var_mangroves)
+
+df_mangroves<-(data.frame(rbind(mean_mangroves,min_mangroves,max_mangroves,var_mangroves),row.names = c("Mean","Min","Max","Variance")))
+
+df_mangroves
+
+colnames(df_mangroves)[which(colnames(df_mangroves)=='nee')]<-'NEE'
+colnames(df_mangroves)[which(colnames(df_mangroves)=='par')]<-'PAR'
+colnames(df_mangroves)[which(colnames(df_mangroves)=='tair')]<-'Air Temperature'
+colnames(df_mangroves)[which(colnames(df_mangroves)=='water.tmax')]<-'Max Water Temperature'
+colnames(df_mangroves)[which(colnames(df_mangroves)=='salinity.max')]<-'Max Salinity'
+
+df_mangroves
+
+df_mangroves$NEE<-round(df_mangroves$NEE,4)
+df_mangroves$PAR<-round(df_mangroves$PAR,4)
+df_mangroves$`Air Temperature`<-round(df_mangroves$`Air Temperature`,4)
+df_mangroves$`Max Water Temperature`<-round(df_mangroves$`Max Water Temperature`,4)
+df_mangroves$`Max Salinity`<-round(df_mangroves$`Max Salinity`,4)
+
+```
+
+```{r}
+write.csv(df_mangroves,"C:/Users/Mere/Desktop/Spring2020_QEcology/Assignment_Workshop_3_Timeseries\\Summary_mangroves_data.csv")
+```
+

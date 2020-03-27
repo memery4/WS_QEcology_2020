@@ -1,0 +1,76 @@
+---
+title: "Workshop 4: Species Distribution Model"
+author: "Meredith Emery"
+date: "1/31/2020"
+output: html_document
+fig_caption: true
+
+---
+
+<style type="text/css">
+h1.title{font-size:18px}
+.author{font-size:16px}
+.date{font-size:16px}
+/* Headers */h1,h2,h3,h4{font-size: 16pt}
+body{/*Normal */ font-size:12px}
+</style>
+
+```{r setup, include=FALSE, warning=FALSE}
+library(knitr)
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+# Objectives
+The primary objective of this analysis is to use a species distribution model to create a more accurate range of Saguaro cactus (*Carnegiea gigantea*) based on the environmental parameters of recorded Saguaro locations.  
+
+# Methods
+
+## Species information 
+
+### *Carnegiea gigantea* (common name: Saguaro)
+
+The tree like cactus known as *Carnegiea gigantea*; common name Saguaro; is native to the Sonoran Desert in Arizona. It has a range as far south as Sonora, Mexico and as far West as the Whipple Mountains in California (Figure 2). *C. gigantea* have a lifespan up to 150 years old and can grow up to 40 feet tall (Figure 1). Around 75 years of age they increase their reproductive capacity by growing “arms”, which allow more flowers and fruit to establish on the apices (Figure 1). *C. gigantea* have adapted to drought conditions by absorbing and storing water during the rainy season and using this water slowly during the dry periods. *C. gigantea* are a keystone species in the desert because it provides food, shelter and protection to many species in the desert. Therefore, it is important to know the distribution and range of the *C. gigantea* in order to inform conservation management practices and policy. 
+
+
+![](https://www.fs.fed.us/wildflowers/plant-of-the-week/images/saguaro/carnegiea_gigantea1_lg.jpg){width=350px} ![](https://worldofsucculents.com/wp-content/uploads/2014/02/Carnegiea-gigantea-Saguaro-Giant-Cactus.jpg){width=325px}
+
+**Figure 1.** Photos of the Saguaro. To the left is the flowers of the Saguaro. The photo to the right is the Saguaro near the Whipple Mountains, California. (www.fs.fed.us)
+
+![**Figure 2.** Map of Southwest United States and Mexico. The range of the cactus Saguaro are within the points displayed as yellow pins.](C:/Users/Mere/Desktop/FIU Courses/Spring 2020/Quantative Ecology_WS/Species Distribution Model/Range_Saguaro_Map.jpg){width=100%}
+
+## Statistical Analysis
+
+### **Bioclim**
+Bioclim is a bioclimate analysis, which consist of biology and climate data. It uses observational presence/absence data as well the environmental data from the observational points to predict potential locations of present observations by using points that have similar environmental parameters as the observed data. If the environmental data of the potential points is in the 50th percentile (median), then the location is recorded as present. Bioclim’s model uses a majority of the data set as the “training set” and the other part of the data as the “testing set”, to test the outcome of the model. The threshold of the known presence range helps the accuracy of the model. This project used observational data and R Script from Jeff Oliver (2018).
+
+# Results
+
+This project used 403 recorded observations of the *C. gigantea*. The majority of the sited *C. gigantea* were in United States compared to Mexico (Figure 3, and Table 1).  In addition, the Bioclim Model used the Global Climate Data from WorldClim to set the climate parameters of the known locations of *C. gigantea* and to establish a range with similar climate values to unknown locations of *C. gigantea*. The final species distribution model from Bioclim created a range that surrounded  the known observational points and similar areas that *C. gigantea* could potentially be found (Figure 4).  
+
+![**Figure 3.** Map of the Observation *Carnegiea gigantea* locations.](C:/Users/Mere/Desktop/Spring2020_QEcology/Assignment_Workshop_4_Species_Distribution_Model/Plots/Individual_Observation_Locations.png)
+
+$~$
+
+**Table 1.** The total amount of recorded observations based on country.
+
+
+|Country|Number of Observed Locations|
+|:---|:-----:|:---:|  
+|United States of America (Arizona, California)|387|
+|Mexico|16|
+|**Total Observations**|403|
+
+
+
+$~$
+
+
+![**Figure 4.** Map of Saguaro distribution using the Bioclim Model. The green is the range computed from the Bioclim model and the black markers are the recored observational location of the Saguaro cactus.](C:/Users/Mere/Desktop/Spring2020_QEcology/Assignment_Workshop_4_Species_Distribution_Model/Plots/Range of Saguaro cactus using the Bioclim Model.png)
+
+
+# Discussion 
+
+To determine a species distribution only through observational data is very difficult, time consuming and expensive, especially for animal species that migrate.  By recording some observations for the species of interest and then using the Bioclim model to create the range of distribution of the species based on climate data cuts down on cost and time. Even though the Bioclim model tests the accuracy of the model through a series of algorithms, one can still go to the unknown location within the range and see if the model was correct in locating *C. gigantea* based on climate similarities. If this shows not to be true, then this location can be recorded as absent and put into the Bioclim model to redefine the accuracy. Species distribution models are important to have for management and policy purposes, especially for endangered and keystone species.  
+
+# Reference
+Oliver, Jeff (2018, April 24) https://jcoliver.github.io/learn-r/011-species-distribution-models.html

@@ -1,0 +1,211 @@
+---
+title: "Emery_Assignment_Nonlinear_Temp_Night"
+output:
+  html_document:
+    df_print: paged
+---
+Challange:
+
+Fit monthly temperature response curves using a similar approach with the night data from harv (night).
+
+NEE ~ a exp(bTA)
+
+a is the base respiration rate when air temperature is 0 rC and b is an empirical coefficient.
+
+Workflow:
+1. Create a dataframe to store month parameter values (parms.Month).
+2. Write a function to the fit model and extract parameters (nee.night).
+3. Write a loop to fit monthly curves and add parameters to a dataframe (parms.Month).
+4. Bootstrapping for error estimation.
+
+
+
+```{r}
+# Set your working directory to the Malone NLM Workshop
+rm(list=ls())
+
+load("C:/Users/Mere/Desktop/FIU Courses/Spring 2020/Quantative Ecology_WS/Nonlinear/NLM_Workshop.RData")
+
+library(nlstools)
+```
+
+Temperature Response Curve
+
+```{r}
+plot( NEE ~ TA, data= night, xlab="Temperature")
+```
+```{r}
+par(mai=c(1,1,0.1,0.1))
+par(mfrow=c(2,2))
+plot( NEE ~ TA, data= night)
+plot( NEE ~ MONTH, data= night)
+plot( PAR ~ MONTH, data= night)
+plot( TA ~ MONTH, data= night)
+
+jan <- subset(night, MONTH == 1)
+feb <- subset(night, MONTH == 2)
+march <- subset(night, MONTH == 3)
+april <- subset(night, MONTH == 4)
+may <- subset(night, MONTH == 5)
+june <- subset(night, MONTH == 6)
+july <- subset(night, MONTH == 7)
+aug <- subset(night, MONTH == 8)
+sept <- subset(night, MONTH == 9)
+oct <- subset(night, MONTH == 10)
+nov <- subset(night, MONTH == 11)
+dec <- subset(night, MONTH == 12)
+
+plot( NEE ~ TA, data= jan)
+plot( NEE ~ TA, data= feb)
+plot( NEE ~ TA, data= april)
+plot( NEE ~ TA, data= may)
+plot( NEE ~ TA, data= june)
+plot( NEE ~ TA, data= july)
+plot( NEE ~ TA, data= aug)
+plot( NEE ~ TA, data= sept)
+plot( NEE ~ TA, data= oct)
+plot( NEE ~ TA, data= nov)
+plot( NEE ~ TA, data= dec)
+
+
+```
+
+```{r}
+##STARTING VALUES FOR NONLINEAR FUNCTIONS
+
+# Selfstart for the trc:
+trcModel <- function(TA, a, b) {
+  y = a * exp(b * TA)
+  return(y)
+}
+```
+
+
+```{r}
+# Create a function to find initial values for the selfstart function:
+
+trc.int <- function (mCall, LHS, data){
+  x <- data$TA
+  y <- data$NEE
+ 
+  a <-1.00703982 + -0.08089044* (min(na.omit(y)))
+  b <- 0.051654 + 0.001400 * (min(na.omit(y)))
+ 
+  value = list(a, b)
+  names(value) <- mCall[c("a", "b")]
+  return(value)
+}
+```
+
+
+```{r}
+# Selfstart function
+SS.trc <- selfStart(model=trcModel,initial = trc.int)
+```
+
+
+```{r}
+#Dataframe to store parms and se
+# Create Dataframe to store the data:
+parms.Month <- data.frame(
+  MONTH=numeric(),
+  a=numeric(),
+  b=numeric(), 
+  a.pvalue=numeric(),
+  b.pvalue=numeric(), stringsAsFactors=FALSE, row.names=NULL)
+
+
+parms.Month[1:12, 1] <- seq(1,12,1) # Creates time file to merge with parm file:
+
+```
+
+
+```{r}
+#Functions: Use Intial Values in the model
+nee.night <- function(dataframe){y.df = nls(NEE ~ a * exp(b*TA), 
+                                            dataframe, start=list(a= iv$a , b=iv$b ),
+                                            na.action=na.exclude, trace=F,
+                                            control=nls.control(warnOnly=T))
+
+y.df <- as.data.frame(cbind(t(coef(summary(y.df))[1:2, 1]), t(coef(summary(y.df)) [1:2, 4])))
+
+names(y.df) <- c("a", "b", "a.pvalue", "b.pvalue")                      
+return(y.df)}
+```
+
+
+```{r}
+# This loop fits monthly models (1:12):
+try(for(j in unique(night$MONTH)){
+  print(j)
+  
+  iv <- getInitial(NEE ~ SS.trc('TA', "a", "b"), data = night[which(night$MONTH == j),]) 
+  
+  y4 <- try(nee.night(night[which(night$MONTH == j),]), silent=T) # Fit night model
+  
+  try(parms.Month[c(parms.Month$MONTH == j ), 2:5 ] <- cbind(y4), silent=T)
+  
+  rm(y4)
+}, silent=T)
+
+parms.Month
+```
+```{r}
+# Create file to store parms and se
+boot.NEE <- data.frame(parms.Month[, c("MONTH")]); names (boot.NEE) <- "MONTH"
+boot.NEE$a.est<- 0
+boot.NEE$b.est<- 0
+boot.NEE$a.se<- 0
+boot.NEE$b.se<- 0
+```
+
+
+```{r}
+# Night Model:
+for ( j in unique(boot.NEE$MONTH)){
+  print(j)
+  y1 <-night[which(night$MONTH == j),]
+  
+  iv <- getInitial(NEE ~ SS.trc('TA',"a", "b"), data = y1) 
+  
+  night.fit <- nls(NEE ~ a * exp(b*TA), 
+                   data=y1, start=list(a= iv$a , b=iv$b ),
+                   na.action=na.exclude, trace=F,
+                   control=nls.control(warnOnly=T))
+  
+  results <- nlsBoot(night.fit, niter=100 )
+  a <- t(results$estiboot)[1, 1:2]
+  names(a) <- c('a.est', 'b.est')
+  b <- t(results$estiboot)[2, 1:2]
+  names(b) <- c('a.se', 'b.se')
+  c <- t(data.frame(c(a,b)))
+  boot.NEE[c(boot.NEE$MONTH == j), 2:5] <- c[1, 1:4]
+  rm(night.fit, a, b, c, results, y1)
+}
+```
+
+
+```{r}
+trc <- merge( parms.Month, boot.NEE)
+
+trc
+trc$a<-round(trc$a,3)
+trc$b<-round(trc$b,3)
+trc$a.pvalue<-"p<0.001"
+trc$b.pvalue<-round(trc$b.pvalue,2)
+trc$b.pvalue[trc$b.pvalue==0]<-"p<0.001"
+trc$a.est<-round(trc$a.est,3)
+trc$b.est<-round(trc$b.est,2)
+trc$a.se<-round(trc$a.se,3)
+trc$b.se<-round(trc$b.se,3)
+write.csv(trc,"C:/Users/Mere/Desktop/QEcology/Assignment_Workshop_2_Nonlinear-models_files\\Temp_Resp_Curve.csv",row.names = F)
+```
+
+```{r}
+library(knitr)
+library(kableExtra)
+kable(trc[,1:5],caption="Table 1. Temperature Response Curve",results='asis')
+
+
+```
+

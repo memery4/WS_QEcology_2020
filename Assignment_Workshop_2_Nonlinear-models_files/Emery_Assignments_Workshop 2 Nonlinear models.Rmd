@@ -1,0 +1,99 @@
+---
+title: "Workshop 2: Nonlinear Models"
+author: "Meredith Emery"
+date: "1/17/2020"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(fig.align='center')
+```
+# Objectives
+The primary objectives of this analysis is to fit monthly light response curves for Harvard forest to understand annual patterns ecosystem photosynthetic potential and respiration rates in temperate mixed forests..
+
+
+# Methods
+
+## Site Information 
+
+### Harvard Forest
+The Harvard Forest has been part of the Long-Term Ecological Research (LTER) since 1988. There are several towers that collect different aspects of the forest, including; light, temperature and CO2. The data for this project is from the Environmental Measurement Station Eddy Flux Tower (EMS), shown as a yellow dot located on the right side of the picture near the border and the NEON Tower, which is shown as a red dot.  Two variables that we will use from the EMS tower is the irradiance (light) and temperature of the forest. 
+
+**Location:** Massachusetts, USA 
+
+**Climate:** Cool, moist temperate July mean temperature 20°C January mean temperature -7°C; Annual mean precipitation 110 cm, distributed fairly evenly throughout the year.
+
+**Vegetation:** Transition Hardwood - White Pine - Hemlock Region
+Dominant species: Red oak (*Quercus rubra*) Red maple (*Acer rubrum*) Black birch (*Betula lenta*) White pine (*Pinus strobus*) Eastern hemlock (*Tsuga canadensis*)
+
+
+![Hardvard Forest Map](https://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/data/p07/hf070/site-map.jpg)
+
+Figure 1. Hardvard Forest Map of the tower location. (https://harvardforest.fas.harvard.edu/)
+
+## Photosynthetic Potential
+
+The maximum amount of carbon dioxide that the forest can fix depends on the amount of light the forest experiences. The photosynthetically active radiation (PAR) is the radiation range between 400-700nm wave band. Thus, the photosynthetic potential is the most carbon fixed when experience a certain amount of radiation, also called the Pmax. 
+The amount of photosynthesis with respect to a given irradiance does not follow a linear equation, instead it follows the Michaelis-Menten Approach equation.  
+
+
+
+![Photosynthesis-irradiation curve](https://upload.wikimedia.org/wikipedia/commons/6/6d/Photosynthesis-irradiance_curve.gif)
+
+Figure 2. Photosynthesis-irradiation curve. Shows the maximum photosynthetic potential ($P_{max}$). (https://en.wikipedia.org/wiki/PI_curve).
+
+## Ecosystem Respiration
+
+The amount of carbon dioxide that is release back into the atmosphere from autotrophic and heterotrophic production is called ecosystem respiration. Plants respire carbon dioxide at night, which the amount of carbon dioxide is temperature dependent. Therefore, the ecosystem respiration follows the Arrhenius Approach equation. 
+
+
+![Carbon Movement Diagram](https://www.nceas.ucsb.edu/files/news/images/Carbone_CarbonMovementDiagram_0.png)
+
+Figure 3. Carbon movement between photosynthesis, carbon uptake, and ecosystem respiration, carbon release. (www.nceas.ucsb.edu)
+
+# Results
+
+NEE per Year
+
+```{r, echo=FALSE}
+load("C:/Users/Mere/Desktop/FIU Courses/Spring 2020/Quantative Ecology_WS/Nonlinear/NLM_Workshop.RData")
+
+plot(harv$TIMESTAMP, harv$NEE,
+     ylab=expression(paste("NEE (",mu,"mol m"^{-2} ~ s^{-1} ~ ")" )), xlab="Year")
+
+```
+
+Light Response Curve
+Net Ecosystem Exchange (NEE) with respect to photosynthetically active radiation (PAR)
+```{r, echo=FALSE}
+plot( NEE ~ PAR, data= day, ylab=expression(paste("NEE (",mu,"mol m"^{-2} ~ s^{-1} ~ ")" )))
+```
+
+NEE, PAR and Temperature per Month
+
+```{r, echo=FALSE}
+par(mfrow=c(2,2))
+plot( NEE ~ MONTH, data= night, ylab=expression(paste("NEE (",mu,"mol m"^{-2} ~ s^{-1} ~ ")" )))
+plot( PAR ~ MONTH, data= night)
+plot( TA ~ MONTH, data= night, ylab="Temperature")
+```
+
+
+Temperature Response Curve
+NEE vs. Temperature
+
+```{r, echo=FALSE}
+plot( NEE ~ TA, data= night, xlab = "Temperature", ylab=expression(paste("NEE (",mu,"mol m"^{-2} ~ s^{-1} ~ ")" )))
+```
+```{r, echo=FALSE}
+trc<-read.csv("C:/Users/Mere/Desktop/Spring2020_QEcology/Assignment_Workshop_2_Nonlinear-models_files\\Temp_Resp_Curve.csv")
+kable(trc[,],caption="Table 1. Temperature Response Curve. The variables; Base respirations rate (a) is when temperature is zero, empirical coefficent (b), a.est and b.est is the values given from bootstrap and the standard error of a and b (a.se and b.se)")
+
+```
+
+# Discussion 
+
+The Net Ecosystem Exchange (NEE) during the day and night does not follow a linear equation. In order to fit the NEE during the day as a function of photosynthesis active radiation (PAR), we used the Michaelis-Menton Approach for the light response curve model. However, because the PAR changes depending on the time of year, the best fit model resulted after sub-setting for each month and fitting the light response curve for each month. In addition, the NEE during the night, or the respiration rate, as a function of temperature used the Arrhenius Approach. Like PAR, temperature changes depending on the time of year, and resulting in the best model was after sub-setting for each month (shown in table 1). The reason sub-setting for each month gave the best model for both light and temperature response curve model, is because the deciduous forest changes based on season. For example, the Harvard Forest will have more leaves during the summer months and thus NEE will have a greater change between uptake of carbon dioxide and release compare to during the winter, which would have less of change of NEE, since there is limited leaves, resulting in less uptake of carbon dioxide from photosynthesis. Therefore, predicting future trends should be shown per month. 
+

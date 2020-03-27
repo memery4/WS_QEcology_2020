@@ -1,0 +1,194 @@
+---
+title: "Quantative Ecoloty Project: Lake Annie Nutrient Timeseries"
+output: html_notebook
+---
+
+ 
+
+```{r}
+rm(list=ls())
+library(zoo)
+library(tseries)
+library(forecast)
+library(xts)
+
+```
+
+ARIMA TIMESERIES with 2006-2018 monthly data
+```{r}
+Secchi_M=read.csv("C:/Users/Mere/Desktop/Spring2020_QEcology/Project/Data Used/LA_2006_2018_Secchi_Nutrients.csv")
+head(Secchi_M)
+
+Secchi_M_ts<-ts(Secchi_M$Secchi_m,start=1,frequency = 12)
+par(mfrow=c(1,1), mai=c(0.25,0.8,0.1, 0.1))
+plot(Secchi_M_ts,typ="l",ylim=rev(range(Secchi_M_ts)), ylab="Secchi (meters)",xlab="Date")
+
+```
+
+```{r}
+plot(Secchi_M_ts, ylim=rev(range(Secchi_M_ts)))
+lines(tsclean(Secchi_M_ts),col="red")
+
+```
+```{r}
+Secchi_M_tsc<- tsclean(Secchi_M_ts)
+
+Secchi_M_d<- decompose(Secchi_M_tsc,'multiplicative')
+plot(Secchi_M_d)
+```
+
+Test for Stationarity
+```{r}
+adf.test(Secchi_M_tsc)
+
+# p-value < 0.05 indicates the TS is stationary
+```
+```{r}
+adf.test(diff(Secchi_M_tsc))
+```
+
+Detecting Autocorrelation
+
+```{r}
+acf(diff(Secchi_M_tsc))
+```
+```{r}
+pacf(diff(Secchi_M_tsc))
+```
+
+
+Fitting an ARIMA MODEL
+```{r}
+arima_Secchi_1_M<-auto.arima(diff(Secchi_M_tsc),trace = TRUE)
+```
+
+
+```{r}
+arima_Secchi_1_M<-auto.arima(diff(Secchi_M_tsc),trace = TRUE)
+tsdisplay(residuals(arima_Secchi_1_M))
+
+```
+
+
+```{r}
+Secchi_M_diff<--diff(Secchi_M_tsc)
+
+arima_Secchi_2_M<-arima(Secchi_M_diff , order=c(4,0,1), seasonal= list(order=c(1,0,0)))
+
+arima_Secchi_2_M
+```
+
+```{r}
+tsdisplay(residuals(arima_Secchi_2_M))
+```
+
+
+```{r}
+arima_Secchi_3_M<-arima(Secchi_M_diff , order=c(1,4,1), seasonal= list(order=c(1,0,0)))
+
+tsdisplay(residuals(arima_Secchi_3_M))
+```
+
+```{r}
+arima_Secchi_4_M<-arima(Secchi_M_diff , order=c(1,0,4), seasonal= list(order=c(1,0,0)))
+
+tsdisplay(residuals(arima_Secchi_4_M))
+```
+```{r}
+par(mfrow=c(1,1))
+
+plot(Secchi_M_diff,type="l"); lines(fitted(arima_Secchi_4_M),col="red")
+```
+
+```{r}
+AIC(arima_Secchi_1_M,arima_Secchi_2_M,arima_Secchi_3_M,arima_Secchi_4_M)
+```
+
+Test for independence. Ljung-Box
+
+```{r}
+checkresiduals(arima_Secchi_4_M)
+
+# Measuring for significant difference from white noise.
+# You need a p-value greater than 0.05!
+```
+
+
+
+Forcasts
+```{r}
+par(mfrow=c(1,1))
+plot(forecast(arima_Secchi_4_M, h=24))
+
+```
+
+Explanatory variables
+
+```{r}
+DOC_M<--ts(Secchi_M$DOC._ppm,start = 1,frequency = 12)
+
+plot(DOC_M,typ="l",ylab="DOC",xlab="Date")
+
+```
+
+```{r}
+plot(DOC_M,typ="l",ylab="DOC",xlab="Date")
+lines(tsclean(DOC_M),col="red")
+```
+
+```{r}
+DOC_M_tsc<-tsclean(DOC_M)
+```
+
+Decompose the time series
+
+```{r}
+DOC_d <- decompose(DOC_M_tsc, 'multiplicative')
+plot(DOC_d)
+```
+
+Test for Stationarity
+
+```{r}
+adf.test(DOC_M_tsc)
+```
+
+```{r}
+DOC_diff<--diff(DOC_M_tsc)
+
+adf.test(DOC_diff)
+```
+
+Explore correlations
+Look for significant lags
+
+```{r}
+
+ccf(DOC_diff,Secchi_M_diff,na.action = na.pass, plot = TRUE)
+
+```
+
+```{r}
+arima_DOC <-auto.arima(Secchi_M_diff, xreg=c(DOC_diff), trace=TRUE)
+```
+
+```{r}
+AIC(arima_Secchi_1_M,arima_Secchi_2_M,arima_Secchi_3_M,arima_Secchi_4_M,arima_DOC)
+```
+
+```{r}
+checkresiduals(arima_DOC)
+```
+
+```{r}
+par(mfrow=c(1,1))
+plot(Secchi_M_diff,typ="l");lines(fitted(arima_DOC),col="red")
+```
+```{r}
+
+```
+
+```{r}
+
+```
+

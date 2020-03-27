@@ -1,0 +1,94 @@
+---
+title: "Workshop 3_Timeseries Models"
+author: "Meredith Emery"
+date: "1/30/2020"
+output: html_document
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+# Objectives
+The primary objective of this analysis is to determine the best fit ARIMA model for the net ecosystem exchange of the mangroves in the Everglades using the seasonal trends and explanatory variables; salinity, air temp, and photosynthetically active radiation (PAR). 
+
+# Methods
+
+## Site Information 
+
+The Florida Coastal Everglades (FCE) has been part of the National Science Foundation Long-term Ecological Research (LTER) since 2000. The Everglades are classified as a freshwater marsh estuary. Within the Everglades there are two drainage sites, the Shark River Slough and the Taylor Slough, that the FCE focus on. For this project the site of interest is Taylor Slough/Panhandle 7 (TS/Ph-7) because it has eddy covariance tower, which logs several environmental variables including; PAR, air temperature, water temperature and salinity.  TS/Ph-7 is located on the canal surrounded by mangroves. 
+
+
+
+![**Figure 1.** Map of Florida Coastal Everglades Long-Term Ecological Research (FCE LTER) Sites.](https://fce-lter.fiu.edu/data/GIS/maps/landsat_map_600dpi.jpg)
+
+
+
+$~$
+
+
+
+### Taylor Slough/Panhandle 7 (TS/Ph-7)
+**Latitude:** 25.19676203
+**Longitude:** -80.64207766
+
+
+![**Figure 2.** Taylor Slough/Panhandle 7 (TS/Ph-7), which is the location of the eddy covariance tower.](C:\Users\Mere\Desktop\FIU Courses\Spring 2020\Quantative Ecology_WS\Timeseries\TS_Ph7.PNG)
+
+$~$
+
+
+![**Figure 3.** Eddy Covariance Tower located Taylor Slough/Panhandle 7 (TS/Ph-7)](https://fce-lter.fiu.edu/photos/_data/i/upload/2019/12/06/20191206161716-0cd45616-xs.jpg)
+
+
+$~$
+
+
+## Statistical Analysis
+
+**Auto Regression Integrated Moving Average (ARIMA)** is an analysis that creates a best fit model based on past data or other explanatory variables to explain the pattern of the time series.  There are two assumption for the ARIMA analysis. First, is that the data needs to be stationary and no seasonal patterns. Autocorrelation and Dickey-Fuller Test are two ways to determine if the data is stationary. Autocorrelation plots allows you to determine the order of magnitude of the variance, so that the data is classified as stationary. One way to eliminate this problem is to average the data so that the variance is constant. Second assumption is that the data should be univariate, which states that only one variable is used in the ARIMA model. 
+
+
+# Results
+
+Net Ecosystem Exchange (NEE) has a fluctuation pattern given by the NEE plot (Fig 4. black line) and the summary table (Table 1). Air temperature has the lowest variance compare PAR, max water temperature, and max salinity (Table 1).
+
+
+The ARIMA NEE model 1 was determine base on the past NEE data, while model 2 NEE used the same past NEE data but then expanded the variance range to include the outliers of the data (Table 2). Adding difference in salinity to the model worsen the AIC score, while adding difference in max water temperature, PAR and air temperature made a better model and lower AIC score (Table 2). The four models that used “difference” means that the moving average of the variable was used and not the raw data. Model 7 (Difference in Air Temp) (Figure 4. (red line)) has the best fit model with the lowest AIC value (Table 2). Each model used the Dickey-Fuller Test and autocorrelation to verify that the stationary assumption was met.  
+
+
+
+```{r,echo=FALSE,warning=FALSE}
+library(knitr)
+df_mangroves<-read.csv("C:/Users/Mere/Desktop/Spring2020_QEcology/Assignment_Workshop_3_Timeseries\\Summary_mangroves_data.csv")
+
+
+colnames(df_mangroves)[which(colnames(df_mangroves)=='Air.Temperature')]<-'Air Temperature'
+colnames(df_mangroves)[which(colnames(df_mangroves)=='Max.Water.Temperature')]<-'Max Water Temperature'
+colnames(df_mangroves)[which(colnames(df_mangroves)=='Max.Salinity')]<-'Max Salinity'
+colnames(df_mangroves)[which(colnames(df_mangroves)=='X')]<-''
+
+kable(df_mangroves[,],caption="**Table 1.** Summary table for NEE, PAR, air temperature, max water temperature, and max salinity.")
+```
+
+$~$
+
+**Table 2.** Comparison between all the Models and their AIC. "Difference" models used the moving average and not the raw data. 
+
+|Model|AIC|df|
+|:---|:-----:|:---:|  
+|Model 1: ARIMA NEE|703.0871|9|
+|Model 2: ARIMA NEE|704.7739|18|
+|Model 3: Difference in Salinity|706.1914|12|
+|Model 4: Extreme Salinity Indicator|700.5729|9|
+|Model 5: Difference in Max Water Temperature|698.2158|9|
+|Model 6: Difference in PAR|683.6822|9|
+|Model 7: Difference in Air Temp|660.8001|8|
+
+
+
+![**Figure 4** Plot of the NEE (black line) and the best fit model (Model 7: Difference in Air Temperature)(red line). When referring to the "difference" means that the model used the moving average and not the raw data from the air temperature.  ](/Users/Mere/Desktop/Spring2020_QEcology/Assignment_Workshop_3_Timeseries/Model_Graphs/Tair_7.png)
+
+
+
+# Discussion 
+
+The best timeseries model for Net Ecosystem Exchange (NEE) used the ARIMA model with air temperature as an explanatory variable.  This is not surprising since we learned from last week that the Harvard Forest NEE depended on air temperature and used it as a dependent variable in the function of NEE during the night. Thus, the mangroves in the Everglades also depend on temperature and changes the rate of NEE. Therefore, with an increase of air temperature due to climate change will change the rate of NEE and could possibly not be able to use air temperature as a variable with in the AIRMA model. 
