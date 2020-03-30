@@ -1,0 +1,75 @@
+---
+title: "Quantative Workshop Project"
+author: "Meredith Emery"
+date: "April 3,2020"
+output: html_document
+fig_caption: true
+
+---
+
+<style type="text/css">
+h1.title{font-size:18px}
+.author{font-size:16px}
+.date{font-size:16px}
+/* Headers */h1,h2,h3,h4{font-size: 16pt}
+body{/*Normal */ font-size:12px}
+</style>
+
+```{r setup, include=FALSE, warning=FALSE}
+library(knitr)
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+# Introduction
+
+## Objectives
+
+# Methods
+
+## Site Information 
+
+## Data Collection/ Data Location
+
+
+
+
+
+![](https://www.fs.fed.us/wildflowers/plant-of-the-week/images/saguaro/carnegiea_gigantea1_lg.jpg){width=350px} ![](https://worldofsucculents.com/wp-content/uploads/2014/02/Carnegiea-gigantea-Saguaro-Giant-Cactus.jpg){width=325px}
+
+**Figure 1.** Photos of the Saguaro. To the left is the flowers of the Saguaro. The photo to the right is the Saguaro near the Whipple Mountains, California. (www.fs.fed.us)
+
+![**Figure 2.** Map of Southwest United States and Mexico. The range of the cactus Saguaro are within the points displayed as yellow pins.](C:/Users/Mere/Desktop/FIU Courses/Spring 2020/Quantative Ecology_WS/Species Distribution Model/Range_Saguaro_Map.jpg){width=100%}
+
+## Statistical Analysis
+
+### ARIMA Model
+
+
+# Results
+
+
+
+$~$
+
+**Table 1.** The total amount of recorded observations based on country.
+
+
+|Country|Number of Observed Locations|
+|:---|:-----:|:---:|  
+|United States of America (Arizona, California)|387|
+|Mexico|16|
+|**Total Observations**|403|
+
+
+
+$~$
+
+
+![**Figure 4.** Map of Saguaro distribution using the Bioclim Model. The green is the range computed from the Bioclim model and the black markers are the recored observational location of the Saguaro cactus.](C:/Users/Mere/Desktop/Spring2020_QEcology/Assignment_Workshop_4_Species_Distribution_Model/Plots/Range of Saguaro cactus using the Bioclim Model.png)
+
+
+# Discussion 
+ 
+
+# Reference
+Oliver, Jeff (2018, April 24) https://jcoliver.github.io/learn-r/011-species-distribution-models.html
