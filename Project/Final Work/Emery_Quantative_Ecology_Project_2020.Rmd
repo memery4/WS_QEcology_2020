@@ -53,7 +53,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Results
 
-![**Figure 3. ** Lake Annie's Monthly Secchi Depth (meters) 2006- 2008](C:/Users/Mere/Desktop/FIU Courses/Spring 2020/Quantative Ecology_WS/Project/Paper/Images_Figures/Monthly_Secchi_2006_2018_Lake_Annie.png)
+![**Figure 3. ** Lake Annie's Monthly Secchi Depth (meters) 2006- 2008](C:/Users/Mere/Desktop/FIU Courses/Spring 2020/Quantative Ecology_WS/Project/Paper/Images_Figures/Monthly_Secchi_2006_2018_Lake_Annie.png){width=400px; height=300px}
 
 
 $~$
