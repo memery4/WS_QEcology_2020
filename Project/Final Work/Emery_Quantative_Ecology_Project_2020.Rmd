@@ -20,7 +20,7 @@ library(knitr)
 knitr::opts_chunk$set(echo = TRUE)
 
 ```
-# Understanding the drivers that effect the water transparency of Lake Annie, FL
+# The drivers that effect the water transparency of Lake Annie, FL
 
 ## Introduction
 
@@ -55,6 +55,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ![**Figure 3. ** Lake Annie's Monthly Secchi Depth (meters) 2006- 2008](C:/Users/Mere/Desktop/FIU Courses/Spring 2020/Quantative Ecology_WS/Project/Paper/Images_Figures/Monthly_Secchi_2006_2018_Lake_Annie.png){width=400px; height=300px}
 
+
+
+![**Figure 3. ** ARIMA Model DOC. The difference in Secchi depth (meters)(depicted by the black line) and the ARIMA Model DOC (depicted by the red line) Year 1 represents 2006 and year 13 represents 2018.](C:/Users/Mere/Desktop/FIU Courses/Spring 2020/Quantative Ecology_WS/Project/Paper/Images_Figures/ARIMA_DOC_Year.png){width=400px; height=300px}
 
 $~$
 
