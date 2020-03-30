@@ -16,12 +16,15 @@ library(xts)
 
 ARIMA TIMESERIES with 2006-2018 monthly data
 ```{r}
-Secchi_M=read.csv("C:/Users/Mere/Desktop/Spring2020_QEcology/Project/Data Used/LA_2006_2018_Secchi_Nutrients.csv")
-head(Secchi_M)
+Secchi_M=read.csv("C:/Users/Mere/Desktop/WS_QEcology_2020/Project/Data Used/LA_2006_2018_Secchi_Nutrients.csv")
+
+Secchi_M$Date <- as.Date(paste(Secchi_M$Month, Secchi_M$Day, Secchi_M$Year, sep="/"), format="%m/%d/%Y")
+class(Secchi_M$Date)
+
 
 Secchi_M_ts<-ts(Secchi_M$Secchi_m,start=1,frequency = 12)
 par(mfrow=c(1,1), mai=c(0.25,0.8,0.1, 0.1))
-plot(Secchi_M_ts,typ="l",ylim=rev(range(Secchi_M_ts)), ylab="Secchi (meters)",xlab="Date")
+plot(Secchi_M$Date, Secchi_M_ts, typ="l",ylim=rev(range(Secchi_M_ts)), ylab="Secchi (meters)",xlab="Date")
 
 ```
 
@@ -125,9 +128,12 @@ plot(forecast(arima_Secchi_4_M, h=24))
 Explanatory variables
 
 ```{r}
-DOC_M<--ts(Secchi_M$DOC._ppm,start = 1,frequency = 12)
+DOC_M<-ts(Secchi_M$DOC_ppm,start = 1,frequency = 12)
 
-plot(DOC_M,typ="l",ylab="DOC",xlab="Date")
+
+par(mfrow=c(1,1), mai=c(0.25,0.8,0.1, 0.1))
+
+plot(Secchi_M$Date,DOC_M,typ="l",ylab="DOC",xlab="Date")
 
 ```
 
@@ -182,7 +188,7 @@ checkresiduals(arima_DOC)
 
 ```{r}
 par(mfrow=c(1,1))
-plot(Secchi_M_diff,typ="l");lines(fitted(arima_DOC),col="red")
+plot(Secchi_M$Date, Secchi_M_diff,typ="l");lines(fitted(arima_DOC),col="red")
 ```
 ```{r}
 

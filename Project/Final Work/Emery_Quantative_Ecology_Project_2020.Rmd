@@ -20,33 +20,40 @@ library(knitr)
 knitr::opts_chunk$set(echo = TRUE)
 
 ```
-# Introduction
+# Understanding the drivers that effect the water transparency of Lake Annie, FL
 
-## Objectives
+## Introduction
 
-# Methods
+### Objectives
 
-## Site Information 
+## Methods
 
-## Data Collection/ Data Location
-
-
+### Site Information 
 
 
+![](C:/Users/Mere/Desktop/FIU Courses/Spring 2020/Quantative Ecology_WS/Project/Paper/Images_Figures/Lake_Annie_Map_5.png){width=250px} ![](C:/Users/Mere/Desktop/FIU Courses/Spring 2020/Quantative Ecology_WS/Project/Paper/Images_Figures/Map_Lak_Annie_close up_2.jpg){width=425px}
 
-![](https://www.fs.fed.us/wildflowers/plant-of-the-week/images/saguaro/carnegiea_gigantea1_lg.jpg){width=350px} ![](https://worldofsucculents.com/wp-content/uploads/2014/02/Carnegiea-gigantea-Saguaro-Giant-Cactus.jpg){width=325px}
+**Figure 1.** Map of Florida with the location of Lake Annie (Left) and ariel view of Lake Annie surrouned by protective land neighboring farmland (Right).
 
-**Figure 1.** Photos of the Saguaro. To the left is the flowers of the Saguaro. The photo to the right is the Saguaro near the Whipple Mountains, California. (www.fs.fed.us)
-
-![**Figure 2.** Map of Southwest United States and Mexico. The range of the cactus Saguaro are within the points displayed as yellow pins.](C:/Users/Mere/Desktop/FIU Courses/Spring 2020/Quantative Ecology_WS/Species Distribution Model/Range_Saguaro_Map.jpg){width=100%}
-
-## Statistical Analysis
-
-### ARIMA Model
+### Data Collection/ Data Location
 
 
-# Results
 
+
+
+
+
+
+
+
+### Statistical Analysis
+
+#### ARIMA Model
+
+
+## Results
+
+![**Figure 3. ** Lake Annie's Monthly Secchi Depth (meters) 2006- 2008](C:/Users/Mere/Desktop/FIU Courses/Spring 2020/Quantative Ecology_WS/Project/Paper/Images_Figures/Monthly_Secchi_2006_2018_Lake_Annie.png)
 
 
 $~$
@@ -62,14 +69,10 @@ $~$
 
 
 
-$~$
 
 
-![**Figure 4.** Map of Saguaro distribution using the Bioclim Model. The green is the range computed from the Bioclim model and the black markers are the recored observational location of the Saguaro cactus.](C:/Users/Mere/Desktop/Spring2020_QEcology/Assignment_Workshop_4_Species_Distribution_Model/Plots/Range of Saguaro cactus using the Bioclim Model.png)
 
-
-# Discussion 
+## Discussion 
  
 
-# Reference
-Oliver, Jeff (2018, April 24) https://jcoliver.github.io/learn-r/011-species-distribution-models.html
+## Reference
