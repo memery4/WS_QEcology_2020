@@ -20,7 +20,10 @@ library(knitr)
 knitr::opts_chunk$set(echo = TRUE)
 
 ```
-# The drivers that effect the water transparency of Lake Annie, FL
+
+
+<center><h1> The drivers that effect the water transparency of Lake Annie, FL </h1></center>
+
 
 ## Introduction
 
@@ -33,7 +36,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ![](C:/Users/Mere/Desktop/FIU Courses/Spring 2020/Quantative Ecology_WS/Project/Paper/Images_Figures/Lake_Annie_Map_5.png){width=250px} ![](C:/Users/Mere/Desktop/FIU Courses/Spring 2020/Quantative Ecology_WS/Project/Paper/Images_Figures/Map_Lak_Annie_close up_2.jpg){width=425px}
 
-**Figure 1.** Map of Florida with the location of Lake Annie (Left) and ariel view of Lake Annie surrouned by protective land neighboring farmland (Right).
+**Figure 1.** Map of Florida with the location of Lake Annie (Left) and ariel view of Lake Annie surrouned by protective land and neighboring farmland (Right).
 
 ### Data Collection/ Data Location
 
