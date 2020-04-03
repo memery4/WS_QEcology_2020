@@ -57,13 +57,7 @@ Three ARIMA models were compared to determine which explanatory variable (dissol
 
 ## Results
 
-![**Figure 2. ** Lake Annie's Monthly Secchi Depth (meters) 2006- 2008](C:/Users/Mere/Desktop/FIU Courses/Spring 2020/Quantative Ecology_WS/Project/Paper/Images_Figures/Monthly_Secchi_2006_2018_Lake_Annie.png){width=400px; height=300px}
-
-
-
-![**Figure 3. ** ARIMA Model DOC. The difference in Secchi depth (meters)(depicted by the black line) and the ARIMA Model DOC (depicted by the red line) Year 1 represents 2006 and year 13 represents 2018.](C:/Users/Mere/Desktop/FIU Courses/Spring 2020/Quantative Ecology_WS/Project/Paper/Images_Figures/ARIMA_DOC_Year.png){width=400px; height=300px}
-
-
+![**Figure 2. ** Lake Annie's Monthly Secchi Depth (meters) 2006- 2018](C:/Users/Mere/Desktop/FIU Courses/Spring 2020/Quantative Ecology_WS/Project/Paper/Images_Figures/Monthly_Secchi_2006_2018_Lake_Annie.png){width=400px; height=300px}
 
 $~$
 
@@ -97,6 +91,8 @@ $~$
 |Model 6: Difference in DOC|263.85|6|
 
 
+
+![**Figure 3. ** ARIMA Model DOC (Model 6). The difference in Secchi depth (meters)(depicted by the black line) and the ARIMA Model of Difference in DOC (depicted by the red line) Year 1 represents 2006 and year 13 represents 2018.](C:/Users/Mere/Desktop/FIU Courses/Spring 2020/Quantative Ecology_WS/Project/Paper/Images_Figures/ARIMA_DOC_Year.png){width=400px; height=300px}
 
 
 
