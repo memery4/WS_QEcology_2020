@@ -4,7 +4,6 @@ author: "Meredith Emery"
 date: "April 3,2020"
 output: html_document
 fig_caption: true
-
 ---
 
 <style type="text/css">
@@ -32,31 +31,28 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Methods
 
 ### Site Information 
+Lake Annie is a small tropical lake (37ha) that is part of Archbold Biological Field Station since 1983 and is located northwest from Lake Okeechobee in Florida (Figure 1. Left photo). Since this lake is protected by the biological field station, it experiences minimal effect from human activity. One potential human effect to Lake Annie is from the neighboring farmlands (Figure 1. Right photo). However, Lake Annie is classified as an oligotrophic lake and is currently not experiencing an enrichment from nutrients. Lake Annie has the maximum depth of 21 meters and experience one turnover period (also known as monomictic). 
 
 
 ![](C:/Users/Mere/Desktop/FIU Courses/Spring 2020/Quantative Ecology_WS/Project/Paper/Images_Figures/Lake_Annie_Map_5.png){width=250px} ![](C:/Users/Mere/Desktop/FIU Courses/Spring 2020/Quantative Ecology_WS/Project/Paper/Images_Figures/Map_Lak_Annie_close up_2.jpg){width=425px}
 
 **Figure 1.** Map of Florida with the location of Lake Annie (Left) and ariel view of Lake Annie surrouned by protective land and neighboring farmland (Right).
 
-### Data Collection/ Data Location
-
-
-
-
-
-
-
-
+### Data Collection/ Data Set
+Archbold Biological Field Station provided the environmental data (secchi depth, dissolved organic carbon (DOC), total phosphorus (TP), total nitrogen (TN), chlorophyll a, and ground water stage). These measurements were taken monthly from 2006-2018. Secchi depth was determined by using a secchi disc to measure the penetration of visible light in the water column. Dissolve organic carbon total phosphorus, total nitrogen and chlorophyll a was determined by taking a water sample and processing the samples in the lab. Ground water stage was determined by measuring the water table above the mean sea level. 
 
 
 ### Statistical Analysis
 
-#### ARIMA Model
+**Autoregressive Integrated Moving Average (ARIMA)** was used to analyze this time series data. The benefit in using the ARIMA model is that the legacy effect within the data, like autocorrelation or seasonality, is capture because the ARIMA models uses the past data or explanatory variables to determine the best model. The time series data must follow two assumption in order to use the ARIMA model. First, the time series data must be stationary, which means that the data must have a constant variance and mean. The augment Dicky-Fuller is a statistical test for stationarity. In addition, the autocorrelation plots, autocorrelation function (ACF) and partial autocorrelation function (PACF), was also used to determine if the data follow stationarity. Secondly the ARIMA residuals must be independent for each interval and the Ljung-Box statistical test was used to test for independence. 
+
+Three ARIMA models were compared to determine which explanatory variable (dissolved organic carbon (DOC), chlorophyll a, or ground water stage) drives the change in water transparency base on secchi depth data. The Akaike’s Information Criterion (AIC) values was compared between the three models and the best model was determined by the lowest AIC value. 
+
 
 
 ## Results
 
-![**Figure 3. ** Lake Annie's Monthly Secchi Depth (meters) 2006- 2008](C:/Users/Mere/Desktop/FIU Courses/Spring 2020/Quantative Ecology_WS/Project/Paper/Images_Figures/Monthly_Secchi_2006_2018_Lake_Annie.png){width=400px; height=300px}
+![**Figure 2. ** Lake Annie's Monthly Secchi Depth (meters) 2006- 2008](C:/Users/Mere/Desktop/FIU Courses/Spring 2020/Quantative Ecology_WS/Project/Paper/Images_Figures/Monthly_Secchi_2006_2018_Lake_Annie.png){width=400px; height=300px}
 
 
 

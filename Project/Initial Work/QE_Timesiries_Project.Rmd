@@ -196,6 +196,275 @@ plot(Secchi_M_diff,typ="l", ylab="Secchi (meters)",xlab="Year");lines(fitted(ari
 plot(Secchi_M$Date, Secchi_M_ts, typ="l",ylim=rev(range(Secchi_M_ts)), ylab="Secchi (meters)",xlab="Date")
 ```
 
+
+
+Chlorophyl
+
+```{r}
+Chloro_M<-ts(Secchi_M$Chl_a_ug_per_L,start = 1,frequency = 12)
+
+
+par(mfrow=c(1,1), mai=c(0.25,0.8,0.1, 0.1))
+
+plot(Secchi_M$Date,Chloro_M,typ="l",ylab="Chlorophyll a (ug/L)",xlab="Date")
+
+```
+
+```{r}
+plot(Chloro_M,typ="l",ylab="Chlorophyll a",xlab="Date")
+lines(tsclean(Chloro_M),col="red")
+```
+
+```{r}
+Chloro_M_tsc<-tsclean(Chloro_M)
+```
+
+Decompose the time series
+
+```{r}
+Chloro_d <- decompose(Chloro_M_tsc, 'multiplicative')
+plot(Chloro_d)
+```
+
+Test for Stationarity
+
+```{r}
+adf.test(Chloro_M_tsc)
+```
+
+```{r}
+Chloro_diff<--diff(Chloro_M_tsc)
+
+adf.test(Chloro_diff)
+```
+
+Explore correlations
+Look for significant lags
+
+```{r}
+
+ccf(Chloro_diff,Secchi_M_diff,na.action = na.pass, plot = TRUE)
+
+```
+
+```{r}
+arima_Chloro <-auto.arima(Secchi_M_diff, xreg=c(Chloro_diff), trace=TRUE)
+```
+
+```{r}
+AIC(arima_Secchi_1_M,arima_Secchi_2_M,arima_Secchi_3_M,arima_Secchi_4_M,arima_DOC,arima_Chloro)
+```
+
+```{r}
+checkresiduals(arima_Chloro)
+```
+
+```{r}
+Date_diff<-Secchi_M$Date[c(-1,0)]
+par(mfrow=c(1,1), mai=c(0.25,0.8,0.1, 0.1))
+plot(Secchi_M_diff,typ="l", ylab="Secchi (meters)",xlab="Year");lines(fitted(arima_Chloro),col="red")
+```
+
+Ground water Stage
+
+```{r}
+GWS_M<-ts(Secchi_M$Groundwater_Stage_m_amsl,start = 1,frequency = 12)
+
+
+par(mfrow=c(1,1), mai=c(0.25,0.8,0.1, 0.1))
+
+plot(Secchi_M$Date,GWS_M,typ="l",ylab="DOC",xlab="Date")
+
+```
+
+```{r}
+plot(GWS_M,typ="l",ylab="Groundwater Stage m amsl",xlab="Date")
+lines(tsclean(GWS_M),col="red")
+```
+
+```{r}
+GWS_M_tsc<-tsclean(GWS_M)
+```
+
+Decompose the time series
+
+```{r}
+GWS_d <- decompose(GWS_M_tsc, 'multiplicative')
+plot(GWS_d)
+```
+
+Test for Stationarity
+
+```{r}
+adf.test(GWS_M_tsc)
+```
+
+```{r}
+GWS_diff<--diff(GWS_M_tsc)
+
+adf.test(GWS_diff)
+```
+
+Explore correlations
+Look for significant lags
+
+```{r}
+
+ccf(GWS_diff,Secchi_M_diff,na.action = na.pass, plot = TRUE)
+
+```
+
+```{r}
+arima_GWS <-auto.arima(Secchi_M_diff, xreg=c(GWS_diff), trace=TRUE)
+```
+
+```{r}
+AIC(arima_Secchi_1_M,arima_Secchi_2_M,arima_Secchi_3_M,arima_Secchi_4_M,arima_DOC,arima_Chloro,arima_GWS)
+```
+
+```{r}
+checkresiduals(arima_GWS)
+```
+
+```{r}
+Date_diff<-Secchi_M$Date[c(-1,0)]
+par(mfrow=c(1,1), mai=c(0.25,0.8,0.1, 0.1))
+plot(Secchi_M_diff,typ="l", ylab="Secchi (meters)",xlab="Year");lines(fitted(arima_GWS),col="red")
+```
+
+
+Total Phosphorus
+
+```{r}
+TP_M<-ts(Secchi_M$TP_ppm,start = 1,frequency = 12)
+
+
+par(mfrow=c(1,1), mai=c(0.25,0.8,0.1, 0.1))
+
+plot(Secchi_M$Date,TP_M,typ="l",ylab="Total Phosphorus",xlab="Date")
+
+```
+
+```{r}
+plot(TP_M,typ="l",ylab="TP",xlab="Date")
+lines(tsclean(TP_M),col="red")
+```
+
+```{r}
+DOC_M_tsc<-tsclean(DOC_M)
+```
+
+Decompose the time series
+
+```{r}
+TP_d <- decompose(TP_M, 'multiplicative')
+plot(TP_d)
+```
+
+Test for Stationarity
+
+```{r}
+adf.test(TP_M)
+```
+
+```{r}
+TP_diff<--diff(TP_M)
+
+adf.test(TP_diff)
+```
+
+Explore correlations
+Look for significant lags
+
+```{r}
+
+ccf(TP_diff,Secchi_M_diff,na.action = na.pass, plot = TRUE)
+
+```
+
+```{r}
+arima_TP <-auto.arima(Secchi_M_diff, xreg=c(TP_diff), trace=TRUE)
+```
+
+```{r}
+AIC(arima_Secchi_1_M,arima_Secchi_2_M,arima_Secchi_3_M,arima_Secchi_4_M,arima_DOC, arima_Chloro, arima_GWS, arima_TP)
+```
+
+```{r}
+checkresiduals(arima_TP)
+```
+
+```{r}
+Date_diff<-Secchi_M$Date[c(-1,0)]
+par(mfrow=c(1,1), mai=c(0.25,0.8,0.1, 0.1))
+plot(Secchi_M_diff,typ="l", ylab="Secchi (meters)",xlab="Year");lines(fitted(arima_TP),col="red")
+```
+
+Total Nitrogen
+```{r}
+TN_M<-ts(Secchi_M$TN_ppm,start = 1,frequency = 12)
+
+
+par(mfrow=c(1,1), mai=c(0.25,0.8,0.1, 0.1))
+
+plot(Secchi_M$Date,TN_M,typ="l",ylab="Total Nitrogen",xlab="Date")
+
+```
+
+```{r}
+plot(TN_M,typ="l",ylab="TN",xlab="Date")
+lines(tsclean(TN_M),col="red")
+```
+
+```{r}
+TN_M_tsc<-tsclean(TN_M)
+```
+
+Decompose the time series
+
+```{r}
+TN_d <- decompose(TN_M_tsc, 'multiplicative')
+plot(TN_d)
+```
+
+Test for Stationarity
+
+```{r}
+adf.test(TN_M_tsc)
+```
+
+```{r}
+TN_diff<--diff(TN_M_tsc) 
+
+adf.test(TN_diff)
+```
+
+Explore correlations
+Look for significant lags
+
+```{r}
+
+ccf(TN_diff,Secchi_M_diff,na.action = na.pass, plot = TRUE)
+
+```
+
+```{r}
+arima_TN <-auto.arima(Secchi_M_diff, xreg=c(TN_diff), trace=TRUE)
+```
+
+```{r}
+AIC(arima_Secchi_1_M,arima_Secchi_2_M,arima_Secchi_3_M,arima_Secchi_4_M,arima_DOC, arima_Chloro, arima_GWS, arima_TP, arima_TN)
+```
+
+```{r}
+checkresiduals(arima_TN)
+```
+
+```{r}
+Date_diff<-Secchi_M$Date[c(-1,0)]
+par(mfrow=c(1,1), mai=c(0.25,0.8,0.1, 0.1))
+plot(Secchi_M_diff,typ="l", ylab="Secchi (meters)",xlab="Year");lines(fitted(arima_TN),col="red")
+```
 ```{r}
 
 ```
