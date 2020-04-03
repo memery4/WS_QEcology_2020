@@ -1,4 +1,4 @@
-Year,Month,Day,TN_ppm,TP_ppm,TOC_ppm,DOC _ppm,Secchi_m,Chl_a_ug_per_L,Groundwater_Stage_m_amsl
+Year,Month,Day,TN_ppm,TP_ppm,TOC_ppm,DOC_ppm,Secchi_m,Chl_a_ug_per_L,Groundwater_Stage_m_amsl
 2006,1,16,0.232,0.006,11.125,11.039,1.1,5,40.41
 2006,2,20,0.202,0.007,11.173,11.005,1,11,40.28
 2006,3,21,0.172,0.008,11.22,10.97,2,7,40.23

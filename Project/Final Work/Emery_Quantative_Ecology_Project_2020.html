@@ -381,11 +381,16 @@ body{/*Normal */ font-size:12px}
 The drivers that effect the water transparency of Lake Annie, FL
 </h1>
 </center>
-<div id="introduction" class="section level2">
-<h2>Introduction</h2>
-<div id="objectives" class="section level3">
-<h3>Objectives</h3>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>Water transparency is influence by the physical, chemical and biological factors of the lake. For example a study of a shallow lake showed that the decrease of water transparency was caused by the wind which resuspend the bottom lake’s sediment into the water column, resulting in a brown water coloration (Fulton et al. 2015). Another research did a full lake experiment and showed that increase in the phosphorus levels in the nutrient content instigated a phytoplankton bloom which caused the water transparency to decrease and the water color became green (Schindler 1974). As the water transparency decreases less visible light is able to penetrate the surface water resulting in a decrease in thermocline depth and a decrease the heating rates of deeper water (Gaiser et al. 2009a). By monitoring a lake’s water transparency one can understand the factors that changes the lake’s ecosystem.</p>
+<div id="previous-research-on-lake-annie-florida" class="section level2">
+<h2>Previous Research on Lake Annie, Florida</h2>
+<p>An interesting pattern of water transparency was seen in a long-term record of a tropical lake, Lake Annie, in Florida. Lake Annie’s yearly average water transparency has an oscillation pattern and the water coloration cycles between clear and dark brown every 30 years (Gaiser et al. 2009b). The continuous data from 2000 to 2008 was used to determine the potential drivers of water transparency, which this study looked at was chlorophyll a, nutrients (total nitrogen and total phosphorus), water color and groundwater level (Gaiser et al. 2009a). They found that the change in water transparency of Lake Annie was primarily caused by the water color, which was from dissolved organic carbon (DOC), and not chlorophyll a or nutrients (Gaiser et al. 2009a). Even with minimal data DOC from 1994-2008, the DOC and ground water level were significant factors that influenced the water transparency of Lake Annie (Gaiser et al. 2009a).</p>
 </div>
+<div id="goals-of-this-project" class="section level2">
+<h2>Goals of this project</h2>
+<p>For my project I would like to continue looking at the drivers of Lake Annie’s water transparency by using the continuous monthly limnological data from 2006 to 2018 to verify the similar findings of prior research. My goal is to use autoregressive integrated moving average (ARIMA) model to analyze the water transparency data and to determine which explanatory variable (chlorophyll a, nitrogen, phosphorus, ground water level or dissolve organic carbon) will result in a better fit model of water transparency. By using a ARIMA model will allow me to understand the lags between each time periods and between the water transparency and the explanatory variables.</p>
 </div>
 <div id="methods" class="section level2">
 <h2>Methods</h2>
@@ -416,30 +421,98 @@ The drivers that effect the water transparency of Lake Annie, FL
 <p class="caption"><strong>Figure 3. </strong> ARIMA Model DOC. The difference in Secchi depth (meters)(depicted by the black line) and the ARIMA Model DOC (depicted by the red line) Year 1 represents 2006 and year 13 represents 2018.</p>
 </div>
 <p><span class="math inline">\(~\)</span></p>
-<p><strong>Table 1.</strong> The total amount of recorded observations based on country.</p>
 <table>
+<caption><strong>Table 1.</strong> Summary table for Total Nitrogen (TN), Total Phosphorus (TP), Dissolved Organic Carbon (DOC), Secchi Depth, Chlorophyll a (Chl a) and Groundwater Level</caption>
 <thead>
 <tr class="header">
-<th align="left">Country</th>
-<th align="center">Number of Observed Locations</th>
-<th align="center"></th>
+<th></th>
+<th align="right">TN (ppm)</th>
+<th align="right">TP (ppm)</th>
+<th align="right">DOC (ppm)</th>
+<th align="right">Secchi Depth (meters)</th>
+<th align="right">Chl a (ug/L)</th>
+<th align="right">Groundwater Level (meters above mean seal level)</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">United States of America (Arizona, California)</td>
-<td align="center">387</td>
-<td align="center"></td>
+<td>Mean</td>
+<td align="right">0.3000</td>
+<td align="right">0.0056</td>
+<td align="right">8.6084</td>
+<td align="right">2.6097</td>
+<td align="right">3.928205</td>
+<td align="right">39.7074</td>
 </tr>
 <tr class="even">
-<td align="left">Mexico</td>
-<td align="center">16</td>
-<td align="center"></td>
+<td>Min</td>
+<td align="right">0.0390</td>
+<td align="right">0.0010</td>
+<td align="right">1.3250</td>
+<td align="right">0.6000</td>
+<td align="right">0.000000</td>
+<td align="right">38.2900</td>
 </tr>
 <tr class="odd">
-<td align="left"><strong>Total Observations</strong></td>
-<td align="center">403</td>
-<td align="center"></td>
+<td>Max</td>
+<td align="right">1.5440</td>
+<td align="right">0.0220</td>
+<td align="right">16.1560</td>
+<td align="right">6.4000</td>
+<td align="right">12.000000</td>
+<td align="right">41.4320</td>
+</tr>
+<tr class="even">
+<td>Variance</td>
+<td align="right">0.0227</td>
+<td align="right">0.0000</td>
+<td align="right">9.1720</td>
+<td align="right">1.8733</td>
+<td align="right">5.279457</td>
+<td align="right">0.5221</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">\(~\)</span></p>
+<p><strong>Table 2.</strong> Comparison between all the Models and their AIC. “Difference” models used the moving average and not the raw data.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Model</th>
+<th align="center">AIC</th>
+<th align="center">df</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Model 1: Difference in Secchi</td>
+<td align="center">326.35</td>
+<td align="center">8</td>
+</tr>
+<tr class="even">
+<td align="left">Model 2: Difference in TN</td>
+<td align="center">329.16</td>
+<td align="center">5</td>
+</tr>
+<tr class="odd">
+<td align="left">Model 3: Difference in Chlorophyll a</td>
+<td align="center">314.38</td>
+<td align="center">4</td>
+</tr>
+<tr class="even">
+<td align="left">Model 4: Difference in TP</td>
+<td align="center">308.22</td>
+<td align="center">7</td>
+</tr>
+<tr class="odd">
+<td align="left">Model 5: Difference in Groundwater Level</td>
+<td align="center">303.49</td>
+<td align="center">4</td>
+</tr>
+<tr class="even">
+<td align="left">Model 6: Difference in DOC</td>
+<td align="center">263.85</td>
+<td align="center">6</td>
 </tr>
 </tbody>
 </table>
@@ -449,6 +522,7 @@ The drivers that effect the water transparency of Lake Annie, FL
 </div>
 <div id="reference" class="section level2">
 <h2>Reference</h2>
+</div>
 </div>
 
 
