@@ -25,7 +25,7 @@ class(Secchi_M$Date)
 
 Secchi_M_ts<-ts(Secchi_M$Secchi_m,start=1,frequency = 12)
 par(mfrow=c(1,1), mai=c(0.25,0.8,0.1, 0.1))
-plot(Secchi_M$Date, Secchi_M_ts, typ="l",ylim=rev(range(Secchi_M_ts)), ylab="Secchi (meters)",xlab="Date")
+plot(Secchi_M$Date, Secchi_M_ts, typ="l",ylim=rev(range(Secchi_M_ts)), ylab="Secchi Depth (meters)",xlab="Date")
 
 ```
 
@@ -190,7 +190,7 @@ checkresiduals(arima_DOC)
 ```{r}
 Date_diff<-Secchi_M$Date[c(-1,0)]
 par(mfrow=c(1,1), mai=c(0.25,0.8,0.1, 0.1))
-plot(Secchi_M_diff,typ="l", ylab="Secchi (meters)",xlab="Year");lines(fitted(arima_DOC),col="red")
+plot(Secchi_M_diff,typ="l", ylab="Secchi Depth (meters)",xlab="Year");lines(fitted(arima_DOC),col="red")
 ```
 ```{r}
 plot(Secchi_M$Date, Secchi_M_ts, typ="l",ylim=rev(range(Secchi_M_ts)), ylab="Secchi (meters)",xlab="Date")
@@ -463,9 +463,60 @@ checkresiduals(arima_TN)
 ```{r}
 Date_diff<-Secchi_M$Date[c(-1,0)]
 par(mfrow=c(1,1), mai=c(0.25,0.8,0.1, 0.1))
-plot(Secchi_M_diff,typ="l", ylab="Secchi (meters)",xlab="Year");lines(fitted(arima_TN),col="red")
+plot(Secchi_M_diff,typ="l", ylab="Secchi Depth (meters)",xlab="Year");lines(fitted(arima_TN),col="red")
 ```
+
+Summary of ARIMA DOC
+
 ```{r}
 
+summary(arima_DOC)
+
+arima_DOC
+
+```
+
+
+
+Summary Table of Variables
+
+```{r}
+Secchi_M=read.csv("C:/Users/Mere/Desktop/WS_QEcology_2020/Project/Data Used/LA_2006_2018_Secchi_Nutrients.csv")
+
+head(Secchi_M)
+
+var_LA<-sapply(Secchi_M[,c(4:5,7:10)],FUN="var")
+var_LA
+
+mean_LA<-sapply(Secchi_M[,c(4:5,7:10)],FUN="mean")
+mean_LA
+
+min_LA<-sapply(Secchi_M[,c(4:5,7:10)],FUN="min")
+max_LA<-sapply(Secchi_M[,c(4:5,7:10)],FUN="max")
+rbind(mean_LA,min_LA,max_LA,var_LA)
+
+df_LA_1<-(data.frame(rbind(mean_LA,min_LA,max_LA,var_LA),row.names = c("Mean","Min","Max","Variance")))
+
+df_LA_1
+
+colnames(df_LA)[which(colnames(df_LA)=='Secchi_m')]<-'Secchi Depth (meters)'
+colnames(df_LA)[which(colnames(df_LA)=='DOC_ppm')]<-'DOC (ppm)'
+colnames(df_LA)[which(colnames(df_LA)=='Groundwater_Stage_m_amsl')]<-'Ground Level (meters above mean seal level)'
+colnames(df_LA)[which(colnames(df_LA)=='TP_ppm')]<-'TP (ppm)'
+colnames(df_LA)[which(colnames(df_LA)=='TN_ppm')]<-'TN (ppm)'
+
+df_LA_1
+
+df_LA_1$`TN_ppm` <-round(df_LA_1$`TN_ppm`,4)
+df_LA_1$`TP_ppm`<-round(df_LA_1$`TP_ppm`,4)
+df_LA_1$`DOC_ppm`<-round(df_LA_1$`DOC_ppm`,4)
+df_LA_1$`Secchi_m`<-round(df_LA_1$`Secchi_m`,4)
+df_LA_1$`Groundwater_Stage_m_amsl`<-round(df_LA_1$`Groundwater_Stage_m_amsl`,4)
+df_LA_1$`Chl_a_ug_per_L`<-round(df_LA_1$`Chl_a_ug_per_L`,4)
+
+```
+
+```{r}
+write.csv(df_LA_1,"C:/Users/Mere/Desktop/WS_QEcology_2020/Project\\Summary_LA_2006_2018_data_2.csv")
 ```
 
