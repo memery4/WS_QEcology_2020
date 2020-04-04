@@ -10,7 +10,8 @@ fig_caption: true
 h1.title{font-size:18px}
 .author{font-size:16px}
 .date{font-size:16px}
-/* Headers */h1,h2,h3,h4{font-size: 16pt}
+/* Headers */h1{font-size: 16pt}
+/* Headers */h2,h3,h4{font-size: 14pt}
 body{/*Normal */ font-size:12px}
 </style>
 
@@ -21,61 +22,71 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-<center><h1> The drivers that effect the water transparency of Lake Annie, FL </h1></center>
+<center><h1> The factors that affect water transparency of Lake Annie, FL </h1></center>
 
 # Introduction
-Water transparency is influence by the physical, chemical and biological factors of the lake. For example a study of a shallow lake showed that the decrease of water transparency was caused by the wind which resuspend the bottom lake’s sediment into the water column, resulting in a brown water coloration (Fulton et al. 2015). Another research did a full lake experiment and showed that increase in the phosphorus levels in the nutrient content instigated a phytoplankton bloom which caused the water transparency to decrease and the water color became green (Schindler 1974).  As the water transparency decreases less visible light is able to penetrate the surface water resulting in a decrease in thermocline depth and a decrease the heating rates of deeper water (Gaiser et al. 2009a). By monitoring a lake’s water transparency one can understand the factors that changes the lake’s ecosystem. 
+ Water transparency is influenced by the physical, chemical and biological factors of the lake. For example a study of a shallow lake showed that a decrease in water transparency was caused by the wind, which resuspended the lake bottom’s sediment into the water column, resulting in a brown water coloration (Fulton et al. 2015). Another study did a full lake experiment and showed that increased phosphorus levels in the nutrient content instigated a phytoplankton bloom, which caused the water transparency to decrease due to the water color turning green (Schindler 1974).  As the water transparency decreases less visible light is able to penetrate the surface water resulting in a decrease in thermocline depth and a decrease to the heating rates of deeper water (Gaiser et al. 2009a). By monitoring a lake’s water transparency one can understand the factors that change the lake’s ecosystem. 
 
 ## Previous Research on Lake Annie, Florida
-An interesting pattern of water transparency was seen in a long-term record of a tropical lake, Lake Annie, in Florida. Lake Annie’s yearly average water transparency has an oscillation pattern and the water coloration cycles between clear and dark brown every 30 years (Gaiser et al. 2009b). The continuous data from 2000 to 2008 was used to determine the potential drivers of water transparency, which this study looked at was chlorophyll a, nutrients (total nitrogen and total phosphorus), water color and groundwater level (Gaiser et al. 2009a). They found that the change in water transparency of Lake Annie was primarily caused by the water color, which was from dissolved organic carbon (DOC), and not chlorophyll a or nutrients (Gaiser et al. 2009a). Even with minimal data DOC from 1994-2008, the DOC and ground water level were significant factors that influenced the water transparency of Lake Annie (Gaiser et al. 2009a).
+An interesting pattern of water transparency was seen in a long-term record of a tropical lake, Lake Annie, in Florida. Lake Annie’s yearly average water transparency has an oscillation pattern and the water coloration cycles between clear and dark brown every 30 years (Gaiser et al. 2009b). The continuous data from 2000 to 2008 was used to determine the potential drivers of water transparency, which this study compared chlorophyll-a, nutrients (total nitrogen and total phosphorus), water color and groundwater level (Gaiser et al. 2009a). They found that the change in water transparency of Lake Annie was primarily caused by the water color, which was from dissolved organic carbon (DOC) and not chlorophyll-a or nutrients (Gaiser et al. 2009a). Even with minimal DOC data from 1994-2008, the DOC and ground water level were significant factors that influenced the water transparency of Lake Annie (Gaiser et al. 2009a).
 
-## Goals of this project
-For my project I would like to continue looking at the drivers of Lake Annie’s water transparency by using the continuous monthly limnological data from 2006 to 2018 to verify the similar findings of prior research. My goal is to use autoregressive integrated moving average (ARIMA) model to analyze the water transparency data and to determine which explanatory variable (chlorophyll a, nitrogen, phosphorus, ground water level or dissolve organic carbon) will result in a better fit model of water transparency. By using a ARIMA model will allow me to understand the lags between each time periods and between the water transparency and the explanatory variables. 
+## Goals of this Project
+For this project I would like to continue looking at the drivers of Lake Annie’s water transparency by using the continuous monthly limnological data from 2006 to 2018, to verify the similar findings of previous research. The primary objective is to see if DOC and groundwater level explain the variation in water transparency of Lake Annie. I intend to use the autoregressive integrated moving average (ARIMA) model to analyze the water transparency data and to determine which explanatory variable (chlorophyll-a, nitrogen, phosphorus, ground water level or dissolve organic carbon) will result in a best fit model for water transparency. By using the ARIMA model it will allow me to understand the temporal patterns between the water transparency and the explanatory variables. 
 
+# Methods
 
-## Methods
+## Site Information 
+Lake Annie is a small tropical lake (37ha) that is part of Archbold Biological Field Station since 1983 and is located northwest from Lake Okeechobee in Florida (Figure 1. Left photo). Since this lake is protected by the biological field station, it experiences minimal effect from human activity. One potential human effect on Lake Annie is from the neighboring farmlands (Figure 1. Right photo). However, Lake Annie is classified as an oligotrophic lake and is currently not experiencing any enrichment from nutrients. Lake Annie has a maximum depth of 21 meters and experiences one turnover period (also known as monomictic). The two sources of freshwater input for Lake Annie are precipitation and groundwater. 
+ 
+$~$
 
-### Site Information 
-Lake Annie is a small tropical lake (37ha) that is part of Archbold Biological Field Station since 1983 and is located northwest from Lake Okeechobee in Florida (Figure 1. Left photo). Since this lake is protected by the biological field station, it experiences minimal effect from human activity. One potential human effect to Lake Annie is from the neighboring farmlands (Figure 1. Right photo). However, Lake Annie is classified as an oligotrophic lake and is currently not experiencing an enrichment from nutrients. Lake Annie has the maximum depth of 21 meters and experience one turnover period (also known as monomictic). 
+<center>![](C:/Users/Mere/Desktop/FIU Courses/Spring 2020/Quantative Ecology_WS/Project/Paper/Images_Figures/Lake_Annie_Map_5.png){width=200px} ![](C:/Users/Mere/Desktop/FIU Courses/Spring 2020/Quantative Ecology_WS/Project/Paper/Images_Figures/Map_Lak_Annie_close up_2.jpg){width=340px}</center>
 
-
-![](C:/Users/Mere/Desktop/FIU Courses/Spring 2020/Quantative Ecology_WS/Project/Paper/Images_Figures/Lake_Annie_Map_5.png){width=250px} ![](C:/Users/Mere/Desktop/FIU Courses/Spring 2020/Quantative Ecology_WS/Project/Paper/Images_Figures/Map_Lak_Annie_close up_2.jpg){width=425px}
 
 **Figure 1.** Map of Florida with the location of Lake Annie (Left) and ariel view of Lake Annie surrouned by protective land and neighboring farmland (Right).
 
-### Data Collection/ Data Set
-Archbold Biological Field Station provided the environmental data (secchi depth, dissolved organic carbon (DOC), total phosphorus (TP), total nitrogen (TN), chlorophyll a, and ground water stage). These measurements were taken monthly from 2006-2018. Secchi depth was determined by using a secchi disc to measure the penetration of visible light in the water column. Dissolve organic carbon total phosphorus, total nitrogen and chlorophyll a was determined by taking a water sample and processing the samples in the lab. Ground water stage was determined by measuring the water table above the mean sea level. 
+## Data Collection/ Data Set
+Archbold Biological Field Station provided the environmental data (secchi depth, dissolved organic carbon (DOC), total phosphorus (TP), total nitrogen (TN), chlorophyll-a, and ground water level). These measurements were taken monthly from 2006-2018. The secchi depth measurement is a good proxy of water transparency. Secchi depth was determined by using a secchi disc to measure the depth of visible light that penetrates in the water column. Dissolved organic carbon, total phosphorus, total nitrogen and chlorophyll-a was determined by taking a water sample and processing the samples in the lab. Ground water stage was determined by measuring the water table above the mean sea level. 
 
+## Statistical Analysis
 
-### Statistical Analysis
+**Autoregressive Integrated Moving Average (ARIMA)** was used to analyze this time series data. The benefit of using the ARIMA model is that the legacy effect within the data, like autocorrelation or seasonality, is captured because the ARIMA model uses the past data or explanatory variables to determine the best fit model. The time series data must follow two assumptions in order to use the ARIMA model. First, the time series data must be stationary, which means that the data must have a constant variance and mean. The augmented Dicky-Fuller was used to test for stationarity. In addition, the autocorrelation plots, autocorrelation function (ACF) and partial autocorrelation function (PACF), was also used to determine if the data followed stationarity. Secondly the ARIMA residuals must be independent for each interval and the Ljung-Box statistical test was used to test for independence. 
 
-**Autoregressive Integrated Moving Average (ARIMA)** was used to analyze this time series data. The benefit in using the ARIMA model is that the legacy effect within the data, like autocorrelation or seasonality, is capture because the ARIMA models uses the past data or explanatory variables to determine the best model. The time series data must follow two assumption in order to use the ARIMA model. First, the time series data must be stationary, which means that the data must have a constant variance and mean. The augment Dicky-Fuller is a statistical test for stationarity. In addition, the autocorrelation plots, autocorrelation function (ACF) and partial autocorrelation function (PACF), was also used to determine if the data follow stationarity. Secondly the ARIMA residuals must be independent for each interval and the Ljung-Box statistical test was used to test for independence. 
+Five ARIMA models were compared to determine which explanatory variable (dissolved organic carbon (DOC), chlorophyll-a, ground water stage, nitrogen or phosphorus) drives the change in water transparency based on secchi depth data. The Akaike’s Information Criterion (AIC) values were compared between the five explanatory models and the best model was determined by the lowest AIC value. 
+ 
 
-Three ARIMA models were compared to determine which explanatory variable (dissolved organic carbon (DOC), chlorophyll a, or ground water stage) drives the change in water transparency base on secchi depth data. The Akaike’s Information Criterion (AIC) values was compared between the three models and the best model was determined by the lowest AIC value. 
+# Results
 
+## Water Transparency and Explanatory Variables 
+The oscillation pattern of the water transparency is seen in the monthly secchi depth data from 2006 to 2018 (Figure 2). The higher value of secchi depth represents the deeper into the water column the secchi disc is seen and the clearer the water column.  The mean secchi depth from 2006 to 2018 was 2.6 meters (Table 1). Secchi depth had a smaller range in variance compared to chlorophyll-a (chl a) and DOC (Table 1). 
+ 
 
-
-## Results
-
-![**Figure 2. ** Lake Annie's Monthly Secchi Depth (meters) 2006- 2018](C:/Users/Mere/Desktop/FIU Courses/Spring 2020/Quantative Ecology_WS/Project/Paper/Images_Figures/Monthly_Secchi_2006_2018_Lake_Annie.png){width=400px; height=300px}
-
-$~$
+![**Figure 2. ** Lake Annie's Monthly Secchi Depth (meters) 2006- 2018. The y axis represents the depth in the water column where the top is the surface of water (0 meters).](C:/Users/Mere/Desktop/FIU Courses/Spring 2020/Quantative Ecology_WS/Project/Paper/Images_Figures/Monthly_Secchi_2006_2018_Lake_Annie.png){width=400px; height=300px}
 
 
 ```{r,echo=FALSE,warning=FALSE}
 library(knitr)
-df_LA<-read.csv("C:/Users/Mere/Desktop/WS_QEcology_2020/Project\\Summary_LA_2006_2018_data.csv")
+df_LA_2<-read.csv("C:/Users/Mere/Desktop/WS_QEcology_2020/Project\\Summary_LA_2006_2018_data_2.csv")
 
-colnames(df_LA)[which(colnames(df_LA)=='TN..ppm.')]<-'TN (ppm)'
-colnames(df_LA)[which(colnames(df_LA)=='TP..ppm.')]<-'TP (ppm)'
-colnames(df_LA)[which(colnames(df_LA)=='DOC..ppm.')]<-'DOC (ppm)'
-colnames(df_LA)[which(colnames(df_LA)=='Secchi.Depth..meters.')]<-'Secchi Depth (meters)'
-colnames(df_LA)[which(colnames(df_LA)=='Chl_a_ug_per_L')]<-'Chl a (ug/L)'
-colnames(df_LA)[which(colnames(df_LA)=='Ground.Level..meters.above.mean.seal.level.')]<-'Groundwater Level (meters above mean seal level)'
-colnames(df_LA)[which(colnames(df_LA)=='X')]<-''
 
-kable(df_LA[,],caption="**Table 1.** Summary table for Total Nitrogen (TN), Total Phosphorus (TP), Dissolved Organic Carbon (DOC), Secchi Depth, Chlorophyll a (Chl a) and Groundwater Level")
+
+
+
+colnames(df_LA_2)[which(colnames(df_LA_2)=='TN_ppm')]<-'TN (ppm)'
+colnames(df_LA_2)[which(colnames(df_LA_2)=='TP_ppm')]<-'TP (ppm)'
+colnames(df_LA_2)[which(colnames(df_LA_2)=='DOC_ppm')]<-'DOC (ppm)'
+colnames(df_LA_2)[which(colnames(df_LA_2)=='Secchi_m')]<-'Secchi Depth (meters)'
+colnames(df_LA_2)[which(colnames(df_LA_2)=='Chl_a_ug_per_L')]<-'Chl a (ug/L)'
+colnames(df_LA_2)[which(colnames(df_LA_2)=='Groundwater_Stage_m_amsl')]<-'Groundwater Level (meters above mean seal level)'
+colnames(df_LA_2)[which(colnames(df_LA_2)=='X')]<-''
+
+
+kable(df_LA_2[,],caption="**Table 1.** Summary table for Total Nitrogen (TN), Total Phosphorus (TP), Dissolved Organic Carbon (DOC), Secchi Depth, Chlorophyll a (Chl a) and Groundwater Level")
 ```
+
+## ARIMA Models
+In order to follow the stationarity assumption for the ARIMA model, the secchi depth and all the explanatory variables had to use the difference in the variable mean. The DOC ARIMA model (model 6) had a lower AIC value compared to the secchi depth past trend and the other explanatory variables (Table 2). The DOC ARIMA model had relatively similar patterns that matched the difference in secchi depth (Figure 3). 
+
 
 $~$
 
@@ -91,12 +102,30 @@ $~$
 |Model 6: Difference in DOC|263.85|6|
 
 
-
 ![**Figure 3. ** ARIMA Model DOC (Model 6). The difference in Secchi depth (meters)(depicted by the black line) and the ARIMA Model of Difference in DOC (depicted by the red line) Year 1 represents 2006 and year 13 represents 2018.](C:/Users/Mere/Desktop/FIU Courses/Spring 2020/Quantative Ecology_WS/Project/Paper/Images_Figures/ARIMA_DOC_Year.png){width=400px; height=300px}
 
 
+# Discussion 
+There are many factors that can influence a lake’s water transparency, however the two that this project focused on were the chlorophyll-a and DOC content. Chlorophyll-a content changes based on an algal bloom that is fueled by the input of nutrients. Since Lake Annie is an oligotrophic lake that experiences very low input of nutrients (nitrogen and phosphorus), it also then experiences minimal algal blooms, resulting in a low chlorophyll-a content. However, the chlorophyll-a did explain some of the variation in the change in secchi depth because the AIC value in the ARIMA chlorophyll-a model was lower than the AIC value of the secchi depth model (Table 2). It is very interesting that total phosphorus and ground water level explained more variation in the secchi depth than did chlorophyll-a, shown by the AIC values. Dissolved organic carbon (DOC) content explained more the change in secchi depth (ie, water transparency) compared to the other explanatory variables and verifies prior research on Lake Annie (Gaiser et al. 2009a).
 
-## Discussion 
- 
+Future improvements to this work are to analyze the explanatory variables as categorical. The current analysis used the raw observation of all explanatory variables, however some explanatory variable models might be improved by reclassifying and looking at the extreme maximum. Another way to improve the secchi depth model is to use the yearly average, which was done in the Gaiser et al. 2009 study, instead of the monthly average that was used in this study. Another improvement is to investigate more climate variables that could have a direct or indirect effect on the lake’s water transparency. Groundwater level is one climate variable that was shown in both this project and prior research (Gaiser et al. 2009a), however the amount of precipitation or wind speed could also explain the variation in water transparency. 
 
-## Reference
+## Further Research
+Lake Annie is one of the rare lakes that has minimal human activity affecting the lake, thus the primary factor that changes the lake dynamics is caused by the climate. A prior study showed the variation of the lake’s water transparency record (secchi depth) was explained by the Atlantic multidecadal oscillation (AMO) (Gaiser et al. 2009b). The AMO has been shown to affect the precipitation in Florida (Enfield et al. 2001). There are two AMO phases; the cool phase has constant rainfall patterns and less storm frequency compared to an AMO warm phase where there is more variability in rainfall and increased storm frequency here in Florida (Enfield et al. 2001). The primary source of freshwater for Lake Annie is rainfall and groundwater. Therefore, a future study is to see if the secchi depth record (ie, water transparency) can be used as a function of the AMO phase. This could potentially result in understanding past or future AMO patterns on a regional scale. 
+
+
+# Reference
+Enfield DB, Mestas-Nuñez AM, Trimble PJ (2001) The Atlantic multidecadal oscillation and its relation to rainfall and river flows in the continental U.S. 28:2077–2080. https://doi.org/10.1029/2000GL012745
+
+Fulton RS, Godwin WF, Schaus MH (2015) Water quality changes following nutrient loading reduction and biomanipulation in a large shallow subtropical lake, Lake Griffin, Florida, USA. Hydrobiologia 753:243–263. https://doi.org/10.1007/s10750-015-2210-8
+
+Gaiser EE, Deyrup ND, Bachmann RW, et al (2009a) Effects of climate variability on transparency and thermal structure in subtropical, monomictic Lake Annie, Florida. Fundam Appl Limnol / Arch für Hydrobiol 175:217–230. https://doi.org/10.1127/1863-9135/2009/0175-0217
+
+Gaiser EE, Deyrup ND, Bachmann RW, et al (2009b) Multidecadal climate oscillations detected in a transparency record from a subtropical florida lake. Limnol Oceanogr 54:2228–2232. https://doi.org/10.4319/lo.2009.54.6.2228
+
+Schindler DW (1974) Eutrophication and recovery in experimental lakes: Implications for lake management. Science (80- ) 184:897–899. https://doi.org/10.1126/science.184.4139.897
+
+
+
+
+

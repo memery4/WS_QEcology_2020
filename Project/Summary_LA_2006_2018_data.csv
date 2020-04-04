@@ -1,5 +1,5 @@
-"","TN (ppm)","TP (ppm)","DOC (ppm)","Secchi Depth (meters)","Chl_a_ug_per_L","Ground Level (meters above mean seal level)"
-"Mean",0.3,0.0056,8.6084,2.6097,3.92820512820513,39.7074
-"Min",0.039,0.001,1.325,0.6,0,38.29
-"Max",1.544,0.022,16.156,6.4,12,41.432
-"Variance",0.0227,0,9.172,1.8733,5.27945740281224,0.5221
+"","","TN (ppm)","TP (ppm)","DOC (ppm)","Secchi Depth (meters)","Chl a (ug/L)","Groundwater Level (meters above mean seal level)"
+"1","Mean",0.3,0.0056,8.6084,2.6097,3.9282,39.7074
+"2","Min",0.039,0.001,1.325,0.6,0,38.29
+"3","Max",1.544,0.022,16.156,6.4,12,41.432
+"4","Variance",0.0227,0,9.172,1.8733,5.2795,0.5221
