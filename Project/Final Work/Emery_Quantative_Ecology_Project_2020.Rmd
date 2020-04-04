@@ -43,7 +43,7 @@ $~$
 <center>![](C:/Users/Mere/Desktop/FIU Courses/Spring 2020/Quantative Ecology_WS/Project/Paper/Images_Figures/Lake_Annie_Map_5.png){width=200px} ![](C:/Users/Mere/Desktop/FIU Courses/Spring 2020/Quantative Ecology_WS/Project/Paper/Images_Figures/Map_Lak_Annie_close up_2.jpg){width=340px}</center>
 
 
-**Figure 1.** Map of Florida with the location of Lake Annie (Left) and ariel view of Lake Annie surrouned by protective land and neighboring farmland (Right).
+**Figure 1.** Map of Florida with the location of Lake Annie (Left) and ariel view of Lake Annie surrounded by protective land and neighboring farmland (Right).
 
 ## Data Collection/ Data Set
 Archbold Biological Field Station provided the environmental data (secchi depth, dissolved organic carbon (DOC), total phosphorus (TP), total nitrogen (TN), chlorophyll-a, and ground water level). These measurements were taken monthly from 2006-2018. The secchi depth measurement is a good proxy of water transparency. Secchi depth was determined by using a secchi disc to measure the depth of visible light that penetrates in the water column. Dissolved organic carbon, total phosphorus, total nitrogen and chlorophyll-a was determined by taking a water sample and processing the samples in the lab. Ground water stage was determined by measuring the water table above the mean sea level. 
@@ -81,7 +81,7 @@ colnames(df_LA_2)[which(colnames(df_LA_2)=='Groundwater_Stage_m_amsl')]<-'Ground
 colnames(df_LA_2)[which(colnames(df_LA_2)=='X')]<-''
 
 
-kable(df_LA_2[,],caption="**Table 1.** Summary table for Total Nitrogen (TN), Total Phosphorus (TP), Dissolved Organic Carbon (DOC), Secchi Depth, Chlorophyll a (Chl a) and Groundwater Level")
+kable(df_LA_2[,],caption="**Table 1.** Summary table for Total Nitrogen (TN), Total Phosphorus (TP), Dissolved Organic Carbon (DOC), Secchi Depth, Chlorophyll-a (Chl a) and Groundwater Level")
 ```
 
 ## ARIMA Models
@@ -96,13 +96,13 @@ $~$
 |:---|:-----:|:---:|  
 |Model 1: Difference in Secchi|326.35|8|
 |Model 2: Difference in TN|329.16|5|
-|Model 3: Difference in Chlorophyll a|314.38|4|
+|Model 3: Difference in Chlorophyll-a|314.38|4|
 |Model 4: Difference in TP|308.22|7|
 |Model 5: Difference in Groundwater Level|303.49|4|
 |Model 6: Difference in DOC|263.85|6|
 
 
-![**Figure 3. ** ARIMA Model DOC (Model 6). The difference in Secchi depth (meters)(depicted by the black line) and the ARIMA Model of Difference in DOC (depicted by the red line) Year 1 represents 2006 and year 13 represents 2018.](C:/Users/Mere/Desktop/FIU Courses/Spring 2020/Quantative Ecology_WS/Project/Paper/Images_Figures/ARIMA_DOC_Year.png){width=400px; height=300px}
+![**Figure 3. ** ARIMA Model DOC (Model 6). The difference in Secchi depth (meters)(depicted by the black line) and the ARIMA Model of Difference in DOC (depicted by the red line). Year 1 represents 2006 and year 13 represents 2018.](C:/Users/Mere/Desktop/FIU Courses/Spring 2020/Quantative Ecology_WS/Project/Paper/Images_Figures/ARIMA_DOC_Year.png){width=400px; height=300px}
 
 
 # Discussion 
